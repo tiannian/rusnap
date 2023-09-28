@@ -1,0 +1,25 @@
+{
+  "name": "__RUSNAP_NAME",
+  "version": "__RUSNAP_VERSION",
+  "description": "__RUSNAP_DESC",
+  "main": "dist/bundle.js",
+  "scripts": {
+    "build": "mm-snap build",
+    "serve": "mm-snap serve",
+    "start": "mm-snap watch"
+  },
+  "author": "__RUSNAP_AUTHOR",
+  "license": "__RUSNAP_LICENSE",
+  "dependencies": {
+    "@metamask/snaps-ui": "^0.37.5-flask.1",
+    "buffer": "^6.0.3",
+    "encoded-uint8array-loader": "^1.0.3",
+    "test-fetch": "file:../test-fetch/pkg"
+  },
+  "devDependencies": {
+    "@metamask/snaps-cli": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

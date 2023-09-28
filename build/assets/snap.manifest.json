@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "description": "An example Snap written in TypeScript.",
+  "proposedName": "TypeScript Example",
+  "source": {
+    "shasum": "mKTtd+OkEuYeNQAcxV9d5ed2y2jGe1YRrE8Itnfnwuc=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "iconPath": "images/icon.svg",
+        "packageName": "rusnap-template",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "snap_dialog": {},
+    "snap_getBip32Entropy": [
+      {
+        "path": [
+          "m",
+          "44'",
+          "3'"
+        ],
+        "curve": "secp256k1"
+      }
+    ],
+    "endowment:rpc": {
+      "dapps": true,
+      "snaps": false
+    },
+    "endowment:network-access": {},
+    "endowment:webassembly": {}
+  },
+  "manifestVersion": "0.1"
+}

@@ -1,0 +1,7 @@
+[snap]
+name = ""
+icon = ""
+registry = ""
+
+[[permissions]]
+permission = "dialog"
