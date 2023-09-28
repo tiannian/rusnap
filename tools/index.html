@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metamask Snap Debug Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="debug-tool">
+        <div class="connect">
+            <input type="text" class="input-field" placeholder="Your Snap ID">
+            <button type="button" class="connect-btn" id="connect-btn">Connect</button>
+        </div>
+        <div class="form">
+            <form action="#" id="form">
+                <input type="text" class="input-field" placeholder="Your Method">
+                <textarea type="text" class="input-field textarea-field" placeholder="Your Arguments"></textarea>
+                <button type="button" class="submit-btn" id="sub">Submit</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        /* 
+            对connect按钮进行设置：
+            单击事件，单击进行连接：
+                成功，改变颜色、显示ready
+                失败，提示框，且显示提示信息
+        */
+        var btn = document.getElementById("connect-btn");
+        btn.onclick = function () {
+            if (true) {
+                document.getElementById("connect-btn").style.backgroundColor = "hwb(129 46% 17%)";
+                document.getElementById("connect-btn").innerHTML = "&#10004 Ready";
+                
+            } else {
+                alert("connection failed: \n The Reason is ....");
+            }
+        }
+
+        /* 
+            表单提交
+        */
+        var form = document.getElementById("form");
+        var sub = document.getElementById("sub");
+
+
+
+        sub.onclick = function () {
+            
+            var formData = new FormData(form);
+            //将表单数据转为json字符串
+            var jsonData = JSON.stringify(Object.fromEntries(formData));
+            console.log(jsonData);
+
+            //发送ajax请求
+            /* 
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'submit.php', true);
+            xhr.setRequestHeader('Content-type', 'application/json');
+            xhr.send(jsonData);
+            */
+        }
+
+    </script>
+</body>
+
+</html>
