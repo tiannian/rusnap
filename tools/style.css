@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+
+}
+
+body {
+    background-color: #efefef;
+    font-family: sans-serif;
+
+}
+
+.debug-tool {
+    width: 500px;
+    background-color: #fff;
+    box-shadow: 0 0 20px 0 #999;
+    top: 50%;
+    left: 50%
+    translate(0);
+    transform: translate(100%, -50%);
+    position: absolute;
+}
+
+form {
+    margin: 35px;
+
+}
+.connect {
+    margin: 35px;
+
+}
+
+.input-field {
+    width: 400px;
+    height: 40px;
+    margin-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #777;
+    border-radius: 14px;
+    outline: none;
+}
+
+.textarea-field {
+    height: 150px;
+    padding-top: 10px;
+    font-family: sans-serif;
+}
+
+.submit-btn {
+    border-radius: 20px;
+    width: 100%;
+    color: #fff;
+    margin-top: 18px;
+    padding: 10px;
+    background-color: #47c35a;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.connect-btn {
+    border-radius: 20px;
+    background-color: #a0e0aa;
+    color: #fff;
+    margin-top: 18px;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
