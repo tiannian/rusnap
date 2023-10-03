@@ -4,19 +4,31 @@ use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
-struct CargoPackage {
-    name: String,
-    version: String,
-    authors: Vec<String>,
+pub(crate) struct CargoPackage {
+    pub name: String,
+    pub version: String,
+    pub authors: Vec<String>,
     #[serde(default)]
-    license: String,
+    pub license: String,
     #[serde(default)]
-    description: String,
+    pub description: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct CargoFile {
+pub(crate) struct CargoFile {
     pub package: CargoPackage,
+}
+
+pub(crate) fn get_cargo_minifest() -> Result<CargoFile> {
+    let mp = env::var("CARGO_MANIFEST_DIR")?;
+
+    let mpath = Path::new(&mp).join("Cargo.toml");
+
+    let ms = fs::read_to_string(mpath)?;
+
+    let pkg: CargoFile = toml::from_str(&ms)?;
+
+    Ok(pkg)
 }
 
 pub(crate) fn build_package_json(path: &Path) -> Result<()> {
@@ -28,13 +40,7 @@ pub(crate) fn build_package_json(path: &Path) -> Result<()> {
 
     let content = include_str!("../assets/package.json");
 
-    let mp = env::var("CARGO_MANIFEST_DIR")?;
-
-    let mpath = Path::new(&mp).join("Cargo.toml");
-
-    let ms = fs::read_to_string(mpath)?;
-
-    let pkg: CargoFile = toml::from_str(&ms)?;
+    let pkg = get_cargo_minifest()?;
 
     let content = content.replace("__RUSNAP_NAME", &pkg.package.name);
     let content = content.replace("__RUSNAP_VERSION", &pkg.package.version);
