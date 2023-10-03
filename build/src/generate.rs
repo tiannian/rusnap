@@ -16,14 +16,26 @@ fn get_rusnap_path() -> Result<PathBuf> {
 
 fn build_snap_config(path: &Path) -> Result<()> {
     let c = include_str!("../assets/snap.config.js");
-    fs::write(path.join("snap.config.js"), c)?;
+    let f = path.join("snap.config.js");
+
+    if f.exists() {
+        return Ok(());
+    }
+
+    fs::write(f, c)?;
 
     Ok(())
 }
 
 fn build_index(path: &Path) -> Result<()> {
     let c = include_str!("../assets/index.js");
-    fs::write(path.join("index.js"), c)?;
+    let f = path.join("index.js");
+
+    if f.exists() {
+        return Ok(());
+    }
+
+    fs::write(f, c)?;
 
     Ok(())
 }
