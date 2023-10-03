@@ -58,6 +58,13 @@ impl BuildArg {
 
         command.spawn()?.wait()?;
 
+        // Install info
+        let nm_path = target_path.join("node_modules");
+        if !nm_path.exists() {
+            let mut cmd = info.npm_install_deps().ok_or(anyhow!("No npm found"))?;
+            cmd.current_dir(&target_path).spawn()?.wait()?;
+        }
+
         // Build mm-snap
         let mut cmd = info.npm_run().ok_or(anyhow!("No npm found"))?;
 
