@@ -68,6 +68,18 @@ fn build_minifest(path: &Path) -> Result<()> {
     Ok(())
 }
 
+fn build_icon(path: &Path) -> Result<()> {
+    let f = fs::read_dir(".")?;
+
+    for p in f {
+        let p = p?;
+
+        println!("{:?}", p.file_name());
+    }
+
+    Ok(())
+}
+
 fn _build() -> Result<()> {
     let path = get_rusnap_path()?;
 
@@ -76,6 +88,7 @@ fn _build() -> Result<()> {
     build_package_json(&path)?;
     build_snap_config(&path)?;
     build_index(&path)?;
+    build_icon(&path)?;
     build_minifest(&path)?;
 
     Ok(())
