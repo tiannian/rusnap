@@ -1,6 +1,6 @@
 {
   "version": "__RUSNAP_VERSION",
-  "description": "An example Snap written in TypeScript.",
+  "description": "__RUSNAP_SNAP_DESC",
   "proposedName": "__RUSNAP_SNAP_NAME",
   "source": {
     "shasum": "mKTtd+OkEuYeNQAcxV9d5ed2y2jGe1YRrE8Itnfnwuc=",
@@ -14,18 +14,6 @@
     }
   },
   "initialPermissions": {
-    "snap_dialog": {},
-    "snap_getBip32Entropy": [
-      {
-        "path": ["m", "44'", "3'"],
-        "curve": "secp256k1"
-      }
-    ],
-    "endowment:rpc": {
-      "dapps": true,
-      "snaps": false
-    },
-    "endowment:network-access": {},
     "endowment:webassembly": {}
   },
   "manifestVersion": "0.1"

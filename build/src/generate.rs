@@ -6,7 +6,7 @@ use std::{
 use anyhow::Result;
 use cargo_metadata::MetadataCommand;
 
-use crate::package::build_package_json;
+use crate::{package::build_package_json, SnapConfig};
 
 fn get_rusnap_path() -> Result<PathBuf> {
     let metadata = MetadataCommand::new().exec()?;
@@ -40,6 +40,18 @@ fn build_index(path: &Path) -> Result<()> {
     Ok(())
 }
 
+fn build_minifest() -> Result<()> {
+    let f = Path::new("./Snap.toml");
+
+    let fc = fs::read_to_string(f)?;
+
+    let config: SnapConfig = toml::from_str(&fc)?;
+
+    println!("config: {:?}", config);
+
+    Ok(())
+}
+
 fn _build() -> Result<()> {
     let path = get_rusnap_path()?;
 
@@ -48,6 +60,7 @@ fn _build() -> Result<()> {
     build_package_json(&path)?;
     build_snap_config(&path)?;
     build_index(&path)?;
+    build_minifest()?;
 
     Ok(())
 }

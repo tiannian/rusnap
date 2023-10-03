@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 pub struct SnapPackage {
     pub name: String,
     pub icon: String,
+    pub description: String,
     pub registry: String,
 }
 
