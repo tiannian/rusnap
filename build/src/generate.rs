@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{fs, path::PathBuf};
 
 use anyhow::Result;
 use cargo_metadata::MetadataCommand;
@@ -13,6 +13,8 @@ fn get_rusnap_path() -> Result<PathBuf> {
 
 fn _build() -> Result<()> {
     let path = get_rusnap_path()?;
+
+    fs::create_dir_all(&path)?;
 
     build_package_json(&path)?;
 
