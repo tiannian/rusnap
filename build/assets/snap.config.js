@@ -2,7 +2,7 @@ import { resolve } from "path";
 
 export default {
   bundler: "webpack",
-  input: resolve(__dirname, "gluecode/index.js"),
+  input: resolve(__dirname, "index.js"),
   server: {
     port: 8080,
   },
