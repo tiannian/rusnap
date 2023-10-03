@@ -1,15 +1,12 @@
 {
   "name": "__RUSNAP_NAME",
   "version": "__RUSNAP_VERSION",
-  "description": "__RUSNAP_DESC",
   "main": "dist/bundle.js",
   "scripts": {
     "build": "mm-snap build",
-    "serve": "mm-snap serve",
-    "start": "mm-snap watch"
+    "serve": "mm-snap serve"
   },
   "author": "__RUSNAP_AUTHOR",
-  "license": "__RUSNAP_LICENSE",
   "dependencies": {
     "@metamask/snaps-ui": "^0.37.5-flask.1",
     "buffer": "^6.0.3",

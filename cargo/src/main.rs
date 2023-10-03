@@ -4,6 +4,7 @@ mod build;
 mod command;
 mod new;
 mod status;
+mod utils;
 
 #[derive(Parser)] // requires `derive` feature
 enum CargoCli {

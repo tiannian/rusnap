@@ -25,9 +25,14 @@ impl NewArg {
 
         output.wait()?;
 
+        let p = Path::new(&self.name);
+
         let snap_toml = include_str!("../assets/Snap.toml");
         let snap_config = snap_toml.replace("RUSNAP_NAME", &snap_name);
-        fs::write(Path::new(&self.name).join("Snap.toml"), snap_config)?;
+        fs::write(p.join("Snap.toml"), snap_config)?;
+
+        let build_rs = include_str!("../assets/build.rs");
+        fs::write(p.join("build.rs"), build_rs)?;
 
         Ok(())
     }

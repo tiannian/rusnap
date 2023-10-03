@@ -78,12 +78,30 @@ impl DepInfo {
         "wasm-pack"
     }
 
-    pub fn npm(&self) -> Option<&str> {
+    pub fn npm_run(&self) -> Option<Command> {
         match self.npm {
             NpmInfo::None => None,
-            NpmInfo::Npm(_) => Some("npm"),
-            NpmInfo::Yarn(_) => Some("yarn"),
-            NpmInfo::Pnpm(_) => Some("pnpm"),
+            NpmInfo::Npm(_) => {
+                let mut cmd = Command::new("npm");
+
+                cmd.arg("run");
+
+                Some(cmd)
+            }
+            NpmInfo::Yarn(_) => {
+                let mut cmd = Command::new("yarn");
+
+                cmd.arg("run");
+
+                Some(cmd)
+            }
+            NpmInfo::Pnpm(_) => {
+                let mut cmd = Command::new("pnpm");
+
+                cmd.arg("run");
+
+                Some(cmd)
+            }
         }
     }
 }
