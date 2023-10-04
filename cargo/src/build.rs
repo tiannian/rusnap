@@ -56,7 +56,11 @@ impl BuildArg {
             command.arg("--profiling");
         }
 
-        command.spawn()?.wait()?;
+        let res = command.spawn()?.wait()?;
+
+        if !res.success() {
+            return Ok(());
+        }
 
         // Install info
         let nm_path = target_path.join("node_modules");

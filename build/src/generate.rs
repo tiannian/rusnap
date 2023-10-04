@@ -3,7 +3,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use cargo_metadata::MetadataCommand;
 
 use crate::{
@@ -43,13 +43,17 @@ fn build_index(path: &Path) -> Result<()> {
     Ok(())
 }
 
-fn build_minifest(path: &Path) -> Result<()> {
+fn get_config() -> Result<SnapConfig> {
     let f = Path::new("./Snap.toml");
 
     let fc = fs::read_to_string(f)?;
 
     let config: SnapConfig = toml::from_str(&fc)?;
 
+    Ok(config)
+}
+
+fn build_minifest(path: &Path, config: &SnapConfig) -> Result<()> {
     let mc = include_str!("../assets/snap.manifest.json");
 
     let cargo_minifest = get_cargo_minifest()?;
@@ -68,14 +72,12 @@ fn build_minifest(path: &Path) -> Result<()> {
     Ok(())
 }
 
-fn build_icon(path: &Path) -> Result<()> {
-    let f = fs::read_dir(".")?;
+fn build_icon(path: &Path, config: &SnapConfig) -> Result<()> {
+    let icon_path = Path::new(&config.snap.icon);
 
-    for p in f {
-        let p = p?;
+    let target = path.join(icon_path);
 
-        println!("{:?}", p.file_name());
-    }
+    fs::copy(icon_path, target)?;
 
     Ok(())
 }
@@ -85,11 +87,13 @@ fn _build() -> Result<()> {
 
     fs::create_dir_all(&path)?;
 
+    let config = get_config()?;
+
     build_package_json(&path)?;
     build_snap_config(&path)?;
     build_index(&path)?;
-    build_icon(&path)?;
-    build_minifest(&path)?;
+    build_icon(&path, &config)?;
+    build_minifest(&path, &config)?;
 
     Ok(())
 }

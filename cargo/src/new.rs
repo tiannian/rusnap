@@ -34,6 +34,9 @@ impl NewArg {
         let build_rs = include_str!("../assets/build.rs");
         fs::write(p.join("build.rs"), build_rs)?;
 
+        let c = include_str!("../assets/icon.svg");
+        fs::write(p.join("icon.svg"), c)?;
+
         Ok(())
     }
 }
