@@ -38,3 +38,16 @@ cargo rusnap build --release
 ```bash
 cargo rusnap start
 ```
+
+Then you can load snap in metamask.
+
+Execute these js statement in broswer devtool:
+
+```js
+window.ethereum.request({
+  method: "wallet_requestSnaps",
+  params: { "local:http://localhost:8080": {} },
+});
+```
+
+Or use Metamask Snap Debug Tool.
