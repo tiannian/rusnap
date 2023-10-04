@@ -27,7 +27,7 @@ macro_rules! rpc_handler {
         pub async fn _on_rpc_request(req: wasm_bindgen::JsValue) -> wasm_bindgen::JsValue {
             let (origin, request) = $crate::exports::parse_rpc_request(req);
 
-            let res = $handle(origin, request);
+            let res = $handler(origin, request);
 
             $crate::serde_wasm_bindgen::to_value(&res).unwrap()
         }
