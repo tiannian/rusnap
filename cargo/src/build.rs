@@ -74,7 +74,6 @@ impl BuildArg {
 
         // Build mm-snap
         let mut cmd = info.npm_run().ok_or(anyhow!("No npm found"))?;
-
         let res = cmd.arg("build").current_dir(&target_path).spawn()?.wait()?;
 
         if res.success() {

@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use clap::Subcommand;
 
-use crate::{build::BuildArg, new::NewArg, status::DepInfo};
+use crate::{build::BuildArg, new::NewArg, start, status::DepInfo};
 
 #[derive(Debug, Subcommand)]
 pub enum Rusnap {
@@ -42,6 +42,9 @@ impl Rusnap {
             Self::Build(arg) => {
                 status(&info)?;
                 arg.execute(&info)?;
+            }
+            Self::Start => {
+                start::execute(&info)?;
             }
             _ => {}
         }
