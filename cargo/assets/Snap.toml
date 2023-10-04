@@ -1,8 +1,0 @@
-[snap]
-name = "RUSNAP_NAME"
-description = "Metamask Snap using Rusnap"
-icon = "icon.svg"
-registry = "https://registry.npmjs.org/"
-
-[[permissions]]
-permission = "dialog"

@@ -2,3 +2,9 @@
 resolver = "2"
 
 members = ["build", "std", "cargo"]
+
+[workspace.package]
+repository = "https://github.com/tiannian/rusnap"
+readme = "README.md"
+license = "MIT"
+authors = ["tiannian <dtiannian@gmail.com>"]
