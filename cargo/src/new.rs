@@ -1,4 +1,4 @@
-use std::{fs, path::Path, process::Command};
+use std::process::Command;
 
 use anyhow::Result;
 use clap::Args;
@@ -20,22 +20,12 @@ impl NewArg {
 
         let mut output = Command::new("wasm-pack")
             .arg("new")
-            .arg(&self.name)
+            .arg("--template")
+            .arg("https://github.com/tiannian/rusnap-template.git")
+            .arg(&snap_name)
             .spawn()?;
 
         output.wait()?;
-
-        let p = Path::new(&self.name);
-
-        let snap_toml = include_str!("../assets/Snap.toml");
-        let snap_config = snap_toml.replace("RUSNAP_NAME", &snap_name);
-        fs::write(p.join("Snap.toml"), snap_config)?;
-
-        let build_rs = include_str!("../assets/build.rs");
-        fs::write(p.join("build.rs"), build_rs)?;
-
-        let c = include_str!("../assets/icon.svg");
-        fs::write(p.join("icon.svg"), c)?;
 
         Ok(())
     }

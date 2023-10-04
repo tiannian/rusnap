@@ -59,23 +59,28 @@ impl BuildArg {
         let res = command.spawn()?.wait()?;
 
         if !res.success() {
-            return Ok(());
+            return Err(anyhow!("Build webassembly failed"));
         }
 
         // Install info
         let nm_path = target_path.join("node_modules");
         if !nm_path.exists() {
             let mut cmd = info.npm_install_deps().ok_or(anyhow!("No npm found"))?;
-            cmd.current_dir(&target_path).spawn()?.wait()?;
+            let res = cmd.current_dir(&target_path).spawn()?.wait()?;
+            if !res.success() {
+                return Err(anyhow!("Install nodejs dependenices failed"));
+            }
         }
 
         // Build mm-snap
         let mut cmd = info.npm_run().ok_or(anyhow!("No npm found"))?;
 
-        cmd.arg("build");
+        let res = cmd.arg("build").current_dir(&target_path).spawn()?.wait()?;
 
-        // command.spawn()?.wait()?;
-
-        Ok(())
+        if res.success() {
+            Ok(())
+        } else {
+            Err(anyhow!("Failed to build snap"))
+        }
     }
 }
