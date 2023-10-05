@@ -8,3 +8,6 @@ repository = "https://github.com/tiannian/rusnap"
 readme = "README.md"
 license = "MIT"
 authors = ["tiannian <dtiannian@gmail.com>"]
+
+[workspace.dependencies]
+rusnap-macros = { version = "0.1", path = "macros" }

@@ -69,7 +69,7 @@ pub enum SnapPermission {
     Cronjob(Cron),
     EthereumProvider,
     NetworkAccess,
-    RPC(RPC),
+    Rpc(RPC),
     TransactionInsight(TransactionInsight),
 }
 

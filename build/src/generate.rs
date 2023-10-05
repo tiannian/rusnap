@@ -31,12 +31,13 @@ fn build_snap_config(path: &Path) -> Result<()> {
 }
 
 fn build_index(path: &Path) -> Result<()> {
-    let c = include_str!("../assets/index.js");
     let f = path.join("index.js");
 
     if f.exists() {
         return Ok(());
     }
+
+    let c = include_str!("../assets/index.js");
 
     fs::write(f, c)?;
 

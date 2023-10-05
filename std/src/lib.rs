@@ -5,4 +5,5 @@ pub use error::*;
 
 pub mod exports;
 
-pub use serde_wasm_bindgen;
+pub use wasm_bindgen;
+pub use wasm_bindgen_futures;
