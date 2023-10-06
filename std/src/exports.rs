@@ -69,10 +69,10 @@ macro_rules! handler {
 macro_rules! entry {
     ($g:block) => {
         mod __entry {
-            use $crate::wasm_bindgen::prelude::wasm_bindgen;
+            use $crate::wasm_bindgen;
             use $crate::wasm_bindgen_futures;
 
-            #[wasm_bindgen]
+            #[wasm_bindgen::prelude::wasm_bindgen]
             pub async fn _entry() {
                 let entry = async $g;
 

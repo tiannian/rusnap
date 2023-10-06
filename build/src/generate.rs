@@ -67,7 +67,6 @@ fn build_minifest(path: &Path, config: &SnapConfig) -> Result<()> {
     let content = content.replace("__RUSNAP_SNAP_REGISTRY", &config.snap.registry);
     let content = content.replace("__RUSNAP_NAME", &cargo_minifest.package.name);
 
-    // TODO: Add permission parse
     let content = build_snap_manifest(&content, config)?;
 
     fs::write(path.join("snap.manifest.json"), content)?;
