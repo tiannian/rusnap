@@ -1,4 +1,10 @@
-import { _entry, initSync } from "./pkg/__rusnap.js";
+import {
+  _entry,
+  initSync,
+  on_cronjob,
+  on_rpc_request,
+  on_transaction,
+} from "./pkg/__rusnap.js";
 import * as module from "./pkg/__rusnap_bg.wasm";
 
 function __load_wasm() {
@@ -18,4 +24,26 @@ function __load_wasm() {
 
 __load_wasm();
 
-export * from "./pkg/__rusnap.js";
+export async function onRpcRequest({ origin, request }) {
+  console.debug(request);
+
+  if (on_rpc_request != undefined) {
+    return await on_rpc_request(origin, request.method, request.params);
+  }
+}
+
+export async function onTransaction({
+  transaction,
+  chainId,
+  transactionOrigin,
+}) {
+  if (on_rpc_request != undefined) {
+    return await on_transaction(transaction, chainId, transactionOrigin);
+  }
+}
+
+export async function onCronjob({ request }) {
+  if (on_cronjob != undefined) {
+    return await on_cronjob(request.method, request.params);
+  }
+}

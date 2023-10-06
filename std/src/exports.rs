@@ -1,82 +1,86 @@
+use std::sync::OnceLock;
+
 use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
 use wasm_bindgen::JsValue;
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct RpcRequest {
-    pub id: String,
-    pub jsonrpc: String,
-    pub method: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct Request {
-    pub origin: String,
-    pub request: RpcRequest,
-}
-
 #[async_trait(?Send)]
-pub trait Handler {
-    async fn handle_rpc(&mut self, _req: JsValue) -> JsValue {
+pub trait Handler: Sync + Send + 'static {
+    async fn handle_rpc(&self, _origin: &str, _method: &str, _params: JsValue) -> JsValue {
         JsValue::null()
     }
 
-    async fn handle_transaction(&mut self, _req: JsValue) -> JsValue {
+    async fn handle_transaction(
+        &self,
+        _transaction: JsValue,
+        _chainid: u64,
+        _origin: JsValue,
+    ) -> JsValue {
         JsValue::null()
     }
 
-    async fn handle_cronjob(&mut self, _req: JsValue) -> JsValue {
+    async fn handle_cronjob(&self, _method: &str, _params: JsValue) -> JsValue {
         JsValue::null()
     }
 }
 
 impl Handler for () {}
 
-#[macro_export]
-macro_rules! handler {
-    ($g:block) => {
-        mod __handler {
+pub static HANDLER: OnceLock<Box<dyn Handler>> = OnceLock::new();
 
-            use $crate::exports::Handler;
-            use $crate::wasm_bindgen::{prelude::wasm_bindgen, JsValue};
-            use $crate::wasm_bindgen_futures;
+pub fn set_handler(handler: impl Handler) {
+    let handler = Box::new(handler);
 
-            #[wasm_bindgen(js_name = onRpcRequest)]
-            pub async fn _on_rpc(req: JsValue) -> JsValue {
-                let mut handler = $g;
-
-                handler.handle_rpc(req).await
-            }
-
-            #[wasm_bindgen(js_name = onTransaction)]
-            pub async fn _on_transaction(req: JsValue) -> JsValue {
-                let mut handler = $g;
-
-                handler.handle_transaction(req).await
-            }
-
-            #[wasm_bindgen(js_name = onCronjob)]
-            pub async fn _on_cronjob(req: JsValue) -> JsValue {
-                let mut handler = $g;
-
-                handler.handle_cronjob(req).await
-            }
-        }
-    };
+    if HANDLER.get().is_none() {
+        HANDLER
+            .set(handler)
+            .map_err(|_| String::from("Failed to set handler"))
+            .unwrap();
+    }
 }
 
 #[macro_export]
 macro_rules! entry {
-    ($g:block) => {
+    ($g:ident) => {
         mod __entry {
-            use $crate::wasm_bindgen;
+            use super::*;
+            use $crate::exports::HANDLER;
+            use $crate::wasm_bindgen::{self, JsValue};
             use $crate::wasm_bindgen_futures;
 
             #[wasm_bindgen::prelude::wasm_bindgen]
             pub async fn _entry() {
-                let entry = async $g;
+                $g().await;
+            }
 
-                entry.await;
+            #[wasm_bindgen::prelude::wasm_bindgen]
+            pub async fn on_rpc_request(origin: &str, method: &str, req: JsValue) -> JsValue {
+                if let Some(h) = HANDLER.get() {
+                    h.handle_rpc(origin, method, req).await
+                } else {
+                    JsValue::null()
+                }
+            }
+
+            #[wasm_bindgen::prelude::wasm_bindgen]
+            pub async fn on_transaction(
+                transaction: JsValue,
+                chainid: u64,
+                req: JsValue,
+            ) -> JsValue {
+                if let Some(h) = HANDLER.get() {
+                    h.handle_transaction(transaction, chainid, req).await
+                } else {
+                    JsValue::null()
+                }
+            }
+
+            #[wasm_bindgen::prelude::wasm_bindgen]
+            pub async fn on_cronjob(method: &str, params: JsValue) -> JsValue {
+                if let Some(h) = HANDLER.get() {
+                    h.handle_cronjob(method, params).await
+                } else {
+                    JsValue::null()
+                }
             }
         }
     };
