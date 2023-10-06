@@ -8,6 +8,7 @@ use cargo_metadata::MetadataCommand;
 
 use crate::{
     package::{build_package_json, get_cargo_minifest},
+    snap::build_snap_manifest,
     SnapConfig,
 };
 
@@ -67,6 +68,7 @@ fn build_minifest(path: &Path, config: &SnapConfig) -> Result<()> {
     let content = content.replace("__RUSNAP_NAME", &cargo_minifest.package.name);
 
     // TODO: Add permission parse
+    let content = build_snap_manifest(&content, config)?;
 
     fs::write(path.join("snap.manifest.json"), content)?;
 

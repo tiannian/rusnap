@@ -1,0 +1,38 @@
+[snap]
+name = "test"
+description = "Metamask Snap using Rusnap"
+icon = "icon.svg"
+registry = "https://registry.npmjs.org/"
+
+[permissions]
+dialog = {}
+rpc = { dapps = true, snaps = true }
+entropy = {}
+manage_accounts = {}
+manage_state = {}
+notify = {}
+ethereum_provider = {}
+network_access = {}
+transaction_insight = { allow_transaction_origin = true }
+
+[[permissions.bip32_entropy]]
+path = "m/44'/3'"
+curve = "secp256k1"
+
+[[permissions.bip32_entropy]]
+path = "m/44'/2'"
+curve = "secp256k1"
+
+[[permissions.bip44_entropy]]
+coin_type = 3
+
+[[permissions.bip44_entropy]]
+coin_type = 2
+
+[[permissions.cronjob]]
+expression = "* * * * *"
+request = { method = "call0", params = {} }
+
+[[permissions.cronjob]]
+expression = "* * * * *"
+request = { method = "call1", params = { hello = "abc" } }
