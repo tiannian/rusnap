@@ -1,4 +1,4 @@
-import { initSync } from "./pkg/__rusnap.js";
+import { _entry, initSync } from "./pkg/__rusnap.js";
 import * as module from "./pkg/__rusnap_bg.wasm";
 
 function __load_wasm() {
@@ -10,6 +10,10 @@ function __load_wasm() {
   }
 
   initSync(ia.buffer);
+
+  if (_entry != undefined) {
+    _entry();
+  }
 }
 
 __load_wasm();
