@@ -1,7 +1,98 @@
-use std::collections::HashMap;
+use std::{any::Any, collections::HashMap};
 
-pub struct Route {
-    pub calls: HashMap<String, Box<dyn Fn()>>,
+use async_trait::async_trait;
+use wasm_bindgen::JsValue;
+
+use crate::{set_handler, Handler};
+
+#[async_trait(?Send)]
+pub trait Endpoint: Send + Sync {
+    async fn handle(
+        &self,
+        methods: &str,
+        params: JsValue,
+        data: &dyn Any,
+        origin: Option<&str>,
+    ) -> JsValue;
 }
 
-impl Route {}
+pub struct Route {
+    pub calls: HashMap<String, Box<dyn Endpoint>>,
+    pub data: Box<dyn Any + Sync + Send>,
+}
+
+#[async_trait(?Send)]
+impl Handler for Route {
+    async fn handle_rpc(&self, origin: &str, method: &str, params: JsValue) -> JsValue {
+        if let Some(h) = self.calls.get(method) {
+            h.handle(method, params, &self.data, Some(origin)).await
+        } else {
+            JsValue::null()
+        }
+    }
+
+    async fn handle_cronjob(&self, method: &str, params: JsValue) -> JsValue {
+        if let Some(h) = self.calls.get(method) {
+            h.handle(method, params, &self.data, None).await
+        } else {
+            JsValue::null()
+        }
+    }
+}
+
+impl Route {
+    pub fn new<D>(data: D) -> Self
+    where
+        D: Send + Sync + 'static,
+    {
+        let data: Box<dyn Any + Send + Sync> = Box::new(data);
+
+        Self {
+            calls: HashMap::new(),
+            data,
+        }
+    }
+
+    pub fn at(&mut self, method: &str, endpoint: impl Endpoint + 'static) {
+        self.calls.insert(String::from(method), Box::new(endpoint));
+    }
+
+    pub fn serve(self) {
+        set_handler(self)
+    }
+}
+
+mod tests {
+    use crate::types::{self, FromRequest, Method};
+
+    use super::*;
+
+    pub async fn example_handle(
+        method: types::Method,
+        params: types::Params<String>,
+        data: types::Data<&String>,
+    ) -> String {
+        String::from("Ok")
+    }
+
+    pub struct ExampleEndpoint;
+
+    #[async_trait(?Send)]
+    impl Endpoint for ExampleEndpoint {
+        async fn handle(
+            &self,
+            method: &str,
+            params: JsValue,
+            data: &dyn Any,
+            _origin: Option<&str>,
+        ) -> JsValue {
+            let method_ = Method::from_request(method, params.clone(), data).await;
+            let params_ = types::Params::from_request(method, params.clone(), data).await;
+            let data_ = types::Data::from_request(method, params, data).await;
+
+            let r = example_handle(method_, params_, data_).await;
+
+            JsValue::null()
+        }
+    }
+}
