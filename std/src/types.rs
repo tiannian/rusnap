@@ -6,11 +6,13 @@ use async_trait::async_trait;
 use serde::de::DeserializeOwned;
 use wasm_bindgen::JsValue;
 
+/// Helper trait from request
 #[async_trait(?Send)]
 pub trait FromRequest<'a> {
     async fn from_request(method: &str, params: JsValue, data: &'a dyn Any) -> Self;
 }
 
+/// JSONRPC Method
 pub struct Method(pub String);
 
 #[async_trait(?Send)]
@@ -20,6 +22,7 @@ impl<'a> FromRequest<'a> for Method {
     }
 }
 
+/// JSONRPC Params
 pub struct Params<P>(pub P);
 
 #[async_trait(?Send)]
@@ -34,6 +37,7 @@ where
     }
 }
 
+/// JSONRPC Data
 pub struct Data<D>(pub D);
 
 #[async_trait(?Send)]

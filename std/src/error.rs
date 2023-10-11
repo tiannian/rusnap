@@ -5,6 +5,9 @@ use thiserror::Error;
 pub enum Error {
     #[error(transparent)]
     SerdeJsonError(#[from] serde_wasm_bindgen::Error),
+
+    #[error(transparent)]
+    FromHexError(#[from] const_hex::FromHexError),
 }
 
 /// Result

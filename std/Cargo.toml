@@ -15,12 +15,10 @@ rusnap-macros.workspace = true
 
 async-trait = "0.1.73"
 js-sys = "0.3.64"
-primitive-types = { version = "0.12.1", features = [
-  "serde_no_std",
-], default-features = false }
 serde = { version = "1.0.188", features = ["derive"] }
 serde-wasm-bindgen = "0.6.0"
 thiserror = "1.0.49"
 wasm-bindgen = { version = "0.2.87" }
 wasm-bindgen-futures = "0.4.37"
 log = "0.4.20"
+const-hex = { version = "1.9.1", features = ["hex"] }
