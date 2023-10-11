@@ -2,6 +2,7 @@
 name = "rusnap"
 version = "0.1.0"
 edition = "2021"
+description = "Library for Rusnap"
 license.workspace = true
 readme.workspace = true
 authors.workspace = true
