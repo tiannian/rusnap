@@ -6,11 +6,12 @@ use super::request;
 
 /// Entropy for Bip32
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Bip44Entropy {
     #[serde(with = "utils")]
-    #[serde(rename = "chainCode")]
     pub chain_code: Vec<u8>,
 
+    #[serde(rename = "coin_type")]
     pub coin_type: u64,
 
     pub depth: u32,
@@ -31,11 +32,12 @@ pub struct Bip44Entropy {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Bip44Params {
+struct Bip44Params {
     #[serde(rename = "coinType")]
     pub coin_type: u64,
 }
 
+/// Get entropy in EIP44.
 pub async fn get_bip44_entropy(coin_type: u64) -> Result<Bip44Entropy> {
     let params = Bip44Params { coin_type };
 

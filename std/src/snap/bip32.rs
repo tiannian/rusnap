@@ -40,6 +40,7 @@ pub struct Bip32Entropy {
     pub public_key: Vec<u8>,
 }
 
+/// Get entropy in BIP32.
 pub async fn get_bip32_entropy(path: &str, curve: Curve) -> Result<Bip32Entropy> {
     let path: Vec<String> = path.split('/').map(String::from).collect();
     let req = Bip32Params {
@@ -50,6 +51,7 @@ pub async fn get_bip32_entropy(path: &str, curve: Curve) -> Result<Bip32Entropy>
     request("snap_getBip32Entropy", req).await
 }
 
+/// Get public key in BIP32.
 pub async fn get_bip32_public_key(path: &str, curve: Curve, compressed: bool) -> Result<Vec<u8>> {
     let path: Vec<String> = path.split('/').map(String::from).collect();
     let req = Bip32Params {
