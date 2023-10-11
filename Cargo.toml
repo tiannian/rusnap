@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
 
-members = ["build", "std", "cargo"]
+members = ["build", "std", "cargo", "macros"]
 
 [workspace.package]
 repository = "https://github.com/tiannian/rusnap"

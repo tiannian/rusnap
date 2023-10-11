@@ -2,7 +2,7 @@
 name = "cargo-rusnap"
 version = "0.1.1"
 edition = "2021"
-description = "Cargo tool for Rusnap"
+description = "Cargo tool for RuSnap"
 license.workspace = true
 readme.workspace = true
 authors.workspace = true

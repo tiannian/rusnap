@@ -90,9 +90,9 @@ mod tests {
             let params_ = types::Params::from_request(method, params.clone(), data).await;
             let data_ = types::Data::from_request(method, params, data).await;
 
-            let _r = example_handle(method_, params_, data_).await;
+            let r = example_handle(method_, params_, data_).await;
 
-            JsValue::null()
+            serde_wasm_bindgen::to_value(&r).unwrap()
         }
     }
 }
