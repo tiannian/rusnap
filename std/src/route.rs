@@ -53,8 +53,9 @@ impl Route {
         }
     }
 
-    pub fn at(&mut self, method: &str, endpoint: impl Endpoint + 'static) {
+    pub fn at(mut self, method: &str, endpoint: impl Endpoint + 'static) -> Self {
         self.calls.insert(String::from(method), Box::new(endpoint));
+        self
     }
 
     pub fn serve(self) {
