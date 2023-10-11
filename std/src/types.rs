@@ -1,3 +1,5 @@
+//! Helper function and type
+
 use std::any::Any;
 
 use async_trait::async_trait;

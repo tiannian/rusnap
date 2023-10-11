@@ -2,6 +2,7 @@ use proc_macro::{Span, TokenStream};
 use quote::quote;
 use syn::{parse_macro_input, FnArg, Ident, ItemFn};
 
+/// Create a endpoint from an async function
 #[proc_macro_attribute]
 pub fn handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let mut input = parse_macro_input!(item as ItemFn);

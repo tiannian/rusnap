@@ -3,6 +3,7 @@ use std::sync::OnceLock;
 use async_trait::async_trait;
 use wasm_bindgen::JsValue;
 
+/// Handler for snap exports
 #[async_trait(?Send)]
 pub trait Handler: Sync + Send + 'static {
     async fn handle_rpc(&self, _origin: &str, _method: &str, _params: JsValue) -> JsValue {
@@ -25,8 +26,10 @@ pub trait Handler: Sync + Send + 'static {
 
 impl Handler for () {}
 
+/// Global Handler
 pub static HANDLER: OnceLock<Box<dyn Handler>> = OnceLock::new();
 
+/// Set Global handler for snap exports
 pub fn set_handler(handler: impl Handler) {
     let handler = Box::new(handler);
 
@@ -38,6 +41,9 @@ pub fn set_handler(handler: impl Handler) {
     }
 }
 
+/// Mark an async function is main.
+///
+/// This function will call when snap load.
 #[macro_export]
 macro_rules! entry {
     ($g:ident) => {

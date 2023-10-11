@@ -25,8 +25,6 @@ function __load_wasm() {
 __load_wasm();
 
 export async function onRpcRequest({ origin, request }) {
-  console.debug(request);
-
   if (on_rpc_request != undefined) {
     return await on_rpc_request(origin, request.method, request.params);
   }

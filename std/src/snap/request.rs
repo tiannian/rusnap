@@ -15,6 +15,11 @@ struct Request<P> {
     params: P,
 }
 
+/// Call metamask using `snap.request`.
+///
+/// This function used to call restricted methods.
+///
+/// Snap Document: [Restricted methods](https://docs.metamask.io/snaps/reference/rpc-api/#restricted-methods)
 pub async fn request<P, R>(method: &'static str, params: P) -> Result<R>
 where
     P: Serialize,
@@ -23,6 +28,11 @@ where
     let req = Request { method, params };
     let req = serde_wasm_bindgen::to_value(&req)?;
 
+    log::debug!("Rpc Call Request is: {:?}", req);
+
     let resp = _request(req).await;
+
+    log::debug!("Rpc Call Result is: {:?}", resp);
+
     Ok(serde_wasm_bindgen::from_value(resp)?)
 }

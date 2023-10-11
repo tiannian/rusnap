@@ -5,6 +5,7 @@ use wasm_bindgen::JsValue;
 
 use crate::{set_handler, Handler};
 
+/// An endpoint can response an method
 #[async_trait(?Send)]
 pub trait Endpoint: Send + Sync {
     async fn handle(
@@ -16,6 +17,7 @@ pub trait Endpoint: Send + Sync {
     ) -> JsValue;
 }
 
+/// Dispatch RPC call based on method.
 pub struct Route {
     pub calls: HashMap<String, Box<dyn Endpoint>>,
     pub data: Box<dyn Any + Sync + Send>,
@@ -41,6 +43,9 @@ impl Handler for Route {
 }
 
 impl Route {
+    /// Create a Route
+    ///
+    /// `data` is an share object for each RPC call.
     pub fn new<D>(data: D) -> Self
     where
         D: Send + Sync + 'static,
@@ -53,11 +58,13 @@ impl Route {
         }
     }
 
+    /// Add an Endpoint to the specified method.
     pub fn at(mut self, method: &str, endpoint: impl Endpoint + 'static) -> Self {
         self.calls.insert(String::from(method), Box::new(endpoint));
         self
     }
 
+    /// Serve Route in entry function.
     pub fn serve(self) {
         set_handler(self)
     }
