@@ -1,5 +1,4 @@
-use rusnap::types;
-use rusnap_macros::handler;
+use rusnap::{handler, types};
 
 #[handler]
 pub async fn example_handle(
