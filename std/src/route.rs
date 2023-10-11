@@ -68,9 +68,9 @@ mod tests {
     use super::*;
 
     pub async fn example_handle(
-        method: types::Method,
-        params: types::Params<String>,
-        data: types::Data<&String>,
+        _method: types::Method,
+        _params: types::Params<String>,
+        _data: types::Data<&String>,
     ) -> String {
         String::from("Ok")
     }
@@ -90,7 +90,7 @@ mod tests {
             let params_ = types::Params::from_request(method, params.clone(), data).await;
             let data_ = types::Data::from_request(method, params, data).await;
 
-            let r = example_handle(method_, params_, data_).await;
+            let _r = example_handle(method_, params_, data_).await;
 
             JsValue::null()
         }
