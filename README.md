@@ -2,6 +2,10 @@
 
 Build Metamask Snap use Rust.
 
+## Example
+
+https://github.com/tiannian/rusnap-example
+
 ## Install and Usage
 
 Install `cargo-rusnap`.
