@@ -18,6 +18,9 @@ pub enum Error {
 
     #[error("No target method found")]
     NoTargetMethodFound,
+
+    #[error("Error from js")]
+    JsError(js_sys::Error),
 }
 
 impl Error {
@@ -27,6 +30,8 @@ impl Error {
                 let e: JsValue = e.into();
                 e.into()
             }
+
+            Self::JsError(e) => e,
 
             _ => js_sys::Error::new(&format!("{self}")),
         }

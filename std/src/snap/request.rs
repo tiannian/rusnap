@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
 
-use crate::{JsResult, Result};
+use crate::{Error, JsResult, Result};
 
 #[wasm_bindgen]
 extern "C" {
@@ -30,7 +30,7 @@ where
 
     log::debug!("Rpc Call Request is: {:?}", req);
 
-    let resp = _request(req).await;
+    let resp = _request(req).await.map_err(Error::JsError)?;
 
     log::debug!("Rpc Call Result is: {:?}", resp);
 
