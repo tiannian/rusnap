@@ -15,6 +15,9 @@ pub enum Error {
 
     #[error("No Implement")]
     NoImplement,
+
+    #[error("No target method found")]
+    NoTargetMethodFound,
 }
 
 impl Error {
@@ -24,9 +27,8 @@ impl Error {
                 let e: JsValue = e.into();
                 e.into()
             }
-            Self::FromHexError(e) => js_sys::Error::new(&format!("{e}")),
-            Self::NoHandlerSet => js_sys::Error::new("No handler set"),
-            Self::NoImplement => js_sys::Error::new("No Implement"),
+
+            _ => js_sys::Error::new(&format!("{self}")),
         }
     }
 }

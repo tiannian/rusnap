@@ -3,8 +3,10 @@
 use std::any::Any;
 
 use async_trait::async_trait;
-use serde::de::DeserializeOwned;
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::JsValue;
+
+use crate::Error;
 
 /// Helper trait from request
 #[async_trait(?Send)]
@@ -28,7 +30,7 @@ pub struct Params<P>(pub P);
 #[async_trait(?Send)]
 impl<'a, P> FromRequest<'a> for Params<P>
 where
-    P: DeserializeOwned,
+    P: for<'de> Deserialize<'de>,
 {
     async fn from_request(_method: &str, params: JsValue, _data: &'a dyn Any) -> Self {
         let params = serde_wasm_bindgen::from_value(params).unwrap();
@@ -49,5 +51,77 @@ where
         let data = data.downcast_ref().unwrap();
 
         Self(data)
+    }
+}
+
+#[async_trait(?Send)]
+pub trait IntoResponse: Sized {
+    async fn into_response(self) -> Result<JsValue, Error>;
+}
+
+#[async_trait(?Send)]
+impl IntoResponse for () {
+    async fn into_response(self) -> Result<JsValue, Error> {
+        Ok(JsValue::null())
+    }
+}
+
+macro_rules! define_concrate_type_response {
+    ($t:ty) => {
+        #[async_trait(?Send)]
+        impl IntoResponse for $t {
+            async fn into_response(self) -> Result<JsValue, Error> {
+                Ok(JsValue::from(self))
+            }
+        }
+    };
+}
+
+define_concrate_type_response!(bool);
+define_concrate_type_response!(f32);
+define_concrate_type_response!(f64);
+define_concrate_type_response!(i128);
+define_concrate_type_response!(i64);
+define_concrate_type_response!(i32);
+define_concrate_type_response!(i16);
+define_concrate_type_response!(i8);
+define_concrate_type_response!(u128);
+define_concrate_type_response!(u64);
+define_concrate_type_response!(u32);
+define_concrate_type_response!(u16);
+define_concrate_type_response!(u8);
+define_concrate_type_response!(isize);
+define_concrate_type_response!(usize);
+
+#[async_trait(?Send)]
+impl<'a> IntoResponse for &'a String {
+    async fn into_response(self) -> Result<JsValue, Error> {
+        Ok(JsValue::from(self))
+    }
+}
+
+#[async_trait(?Send)]
+impl<T> IntoResponse for Option<T>
+where
+    JsValue: From<T>,
+{
+    async fn into_response(self) -> Result<JsValue, Error> {
+        Ok(match self {
+            Some(v) => JsValue::from(v),
+            None => JsValue::null(),
+        })
+    }
+}
+
+#[async_trait(?Send)]
+impl<T, E> IntoResponse for Result<T, E>
+where
+    T: Serialize,
+    Error: From<E>,
+{
+    async fn into_response(self) -> Result<JsValue, Error> {
+        let r = serde_wasm_bindgen::to_value(&self?)?;
+
+        Ok(r)
     }
 }

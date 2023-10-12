@@ -29,7 +29,7 @@ pub fn handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
         mod #mod_name {
             use super::*;
-            use rusnap::{wasm_bindgen::JsValue, types::FromRequest};
+            use rusnap::{wasm_bindgen::JsValue, types::{FromRequest, IntoResponse}, Result};
 
             #input
 
@@ -44,7 +44,7 @@ pub fn handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
                     params: JsValue,
                     data: &dyn std::any::Any,
                     _origin: Option<&str>,
-                ) -> JsValue {
+                ) -> Result<JsValue> {
 
                     #(
                         let #arg_name = FromRequest::from_request(method, params.clone(), data).await;
@@ -52,8 +52,9 @@ pub fn handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
                     let r = #mod_name( #(#arg_name),* ).await;
 
-                    // rusnap::
-                    rusnap::serde_wasm_bindgen::to_value(&r).unwrap()
+                    Ok(r.into_response().await?)
+
+                    // Ok(rusnap::serde_wasm_bindgen::to_value(&r)?)
                 }
             }
         }
