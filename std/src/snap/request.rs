@@ -1,12 +1,12 @@
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
 
-use crate::Result;
+use crate::{JsResult, Result};
 
 #[wasm_bindgen]
 extern "C" {
-    #[wasm_bindgen(js_namespace = snap, js_name = request)]
-    async fn _request(args: JsValue) -> JsValue;
+    #[wasm_bindgen(js_namespace = snap, js_name = request, catch)]
+    async fn _request(args: JsValue) -> JsResult<JsValue>;
 }
 
 #[derive(Debug, Serialize, Deserialize)]
