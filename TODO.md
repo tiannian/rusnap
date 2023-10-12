@@ -4,11 +4,13 @@
 
 - [x] Build.rs support
 - [x] cargo rusnap
-- [ ] main in macros
-- [ ] catch support
-- [ ] result expose support
+- [x] main in macros
+- [x] catch support
+- [x] result expose support
 - [ ] ethereum provider
+- [ ] network api
 
 ## Version 0.2
 
 - [ ] Add workspace support
+- [ ] Remove npm, use Rust build frontend asset directly.
