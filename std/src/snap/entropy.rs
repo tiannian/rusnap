@@ -5,13 +5,14 @@ use crate::Result;
 use super::request;
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct EntropyParams {
+struct EntropyParams {
     pub version: u64,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub salt: Option<String>,
 }
 
+/// Create entropy v1 using salt
 pub async fn get_entropy_v1_salt<S>(salt: S) -> Result<Vec<u8>>
 where
     S: Into<String>,
@@ -26,6 +27,7 @@ where
     Ok(const_hex::decode(r)?)
 }
 
+/// Create entropy v1
 pub async fn get_entropy_v1() -> Result<Vec<u8>> {
     let params = EntropyParams {
         version: 1,

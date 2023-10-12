@@ -25,21 +25,21 @@ pub struct Route {
 
 #[async_trait(?Send)]
 impl Handler for Route {
-    async fn handle_rpc(&self, origin: &str, method: &str, params: JsValue) -> JsValue {
-        if let Some(h) = self.calls.get(method) {
-            h.handle(method, params, &self.data, Some(origin)).await
-        } else {
-            JsValue::null()
-        }
-    }
-
-    async fn handle_cronjob(&self, method: &str, params: JsValue) -> JsValue {
-        if let Some(h) = self.calls.get(method) {
-            h.handle(method, params, &self.data, None).await
-        } else {
-            JsValue::null()
-        }
-    }
+    // async fn handle_rpc(&self, origin: &str, method: &str, params: JsValue) -> JsValue {
+    //     if let Some(h) = self.calls.get(method) {
+    //         h.handle(method, params, &self.data, Some(origin)).await
+    //     } else {
+    //         JsValue::null()
+    //     }
+    // }
+    //
+    // async fn handle_cronjob(&self, method: &str, params: JsValue) -> JsValue {
+    //     if let Some(h) = self.calls.get(method) {
+    //         h.handle(method, params, &self.data, None).await
+    //     } else {
+    //         JsValue::null()
+    //     }
+    // }
 }
 
 impl Route {

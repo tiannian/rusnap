@@ -1,6 +1,6 @@
 use proc_macro::{Span, TokenStream};
 use quote::quote;
-use syn::{parse_macro_input, FnArg, Ident, ItemFn};
+use syn::{parse_macro_input, token::Pub, FnArg, Ident, ItemFn, Visibility};
 
 /// Create a endpoint from an async function
 #[proc_macro_attribute]
@@ -60,6 +60,50 @@ pub fn handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
         pub use #mod_name::#struct_name;
 
+    };
+
+    TokenStream::from(expanded)
+}
+
+/// Main function
+#[proc_macro_attribute]
+pub fn main(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    let mut input = parse_macro_input!(item as ItemFn);
+
+    input.vis = Visibility::Public(Pub::default());
+
+    let expanded = quote! {
+        mod __rusnp_entry {
+            use rusnap::{wasm_bindgen::{self, JsValue}, wasm_bindgen_futures, exports, JsResult};
+
+            use super::*;
+
+            #[wasm_bindgen::prelude::wasm_bindgen(js_name = _entry)]
+            #input
+
+            #[wasm_bindgen::prelude::wasm_bindgen]
+            pub async fn on_rpc_request(
+                origin: &str,
+                method: &str,
+                req: JsValue
+            ) -> JsResult<JsValue> {
+                exports::on_rpc_request(origin, method, req).await
+            }
+
+            #[wasm_bindgen::prelude::wasm_bindgen]
+            pub async fn on_transaction(
+                transaction: JsValue,
+                chainid: u64,
+                req: JsValue
+            ) -> JsResult<JsValue> {
+                exports::on_transaction(transaction, chainid, req).await
+            }
+
+            #[wasm_bindgen::prelude::wasm_bindgen]
+            pub async fn on_cronjob(method: &str, params: JsValue) -> JsResult<JsValue> {
+                exports::on_cronjob(method, params).await
+            }
+        }
     };
 
     TokenStream::from(expanded)
