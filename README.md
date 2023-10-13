@@ -111,3 +111,5 @@ getrandom = { version = "0.2.10", features = ["js"] }
 ### Web3 SDK
 
 Use `rusnap-ethers` and `ethers`.
+
+> Note: `rusnap-ethers` don't re-export into `rusnap` crate, please add this crate independently.

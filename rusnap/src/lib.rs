@@ -5,9 +5,6 @@ pub use rusnap_api as api;
 pub use rusnap_build as build;
 
 #[doc(inline)]
-pub use rusnap_ethers as ethers;
-
-#[doc(inline)]
 pub use rusnap_exports as exports;
 
 #[doc(inline)]

@@ -1,6 +1,6 @@
 [package]
 name = "rusnap"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 description = "Metamask Snap in Rust"
 repository.workspace = true
@@ -13,7 +13,6 @@ authors.workspace = true
 [dependencies]
 rusnap-api.workspace = true
 rusnap-build.workspace = true
-rusnap-ethers.workspace = true
 rusnap-exports.workspace = true
 rusnap-utils.workspace = true
 rusnap-macros.workspace = true

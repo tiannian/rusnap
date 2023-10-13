@@ -11,7 +11,7 @@
 - [ ] network api
 - [x] add document
 - [ ] Add timer and cycle call
-- [ ] Error handle
+- [x] Error handle
 
 ## Version 0.2
 
