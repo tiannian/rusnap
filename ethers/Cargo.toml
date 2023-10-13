@@ -2,6 +2,7 @@
 name = "rusnap-ethers"
 version = "0.1.0"
 edition = "2021"
+description = "Ethers compact layer for RuSnap"
 repository.workspace = true
 readme.workspace = true
 license.workspace = true
