@@ -2,13 +2,13 @@
 resolver = "2"
 
 members = [
-  "build",
-  "cargo",
-  "macros",
-  "ethers",
-  "api",
-  "exports",
-  "utils",
+  "rusnap-build",
+  "cargo-rusnap",
+  "rusnap-macros",
+  "rusnap-ethers",
+  "rusnap-api",
+  "rusnap-exports",
+  "rusnap-utils",
   "rusnap",
 ]
 
@@ -19,8 +19,8 @@ license = "MIT"
 authors = ["tiannian <dtiannian@gmail.com>"]
 
 [workspace.dependencies]
-rusnap-utils = { version = "0.1", path = "utils" }
-rusnap-macros = { version = "0.1", path = "macros" }
+rusnap-utils = { version = "0.1", path = "rusnap-utils" }
+rusnap-macros = { version = "0.1", path = "rusnap-macros" }
 
 async-trait = "0.1.73"
 serde = { version = "1.0.189", features = ["derive"] }
