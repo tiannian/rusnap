@@ -1,6 +1,6 @@
 [package]
 name = "rusnap-ethers"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Ethers compact layer for RuSnap"
 repository.workspace = true
@@ -11,17 +11,18 @@ authors.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-trait = "0.1.73"
+async-trait.workspace = true
+js-sys.workspace = true
+log.workspace = true
+rusnap-utils.workspace = true
+serde.workspace = true
+serde-wasm-bindgen.workspace = true
+thiserror.workspace = true
+wasm-bindgen.workspace = true
+wasm-bindgen-futures.workspace = true
+
 ethers-providers = { version = "2.0.10", default-features = false }
 getrandom = { version = "0.2.10", features = ["js"] }
-js-sys = "0.3.64"
-log = "0.4.20"
-rusnap-utils.workspace = true
-serde = "1.0.189"
-serde-wasm-bindgen = "0.6.0"
-thiserror = "1.0.49"
-wasm-bindgen = "0.2.87"
-wasm-bindgen-futures = "0.4.37"
 
 [package.metadata.docs.rs]
 default-target = "wasm32-unknown-unknown"
