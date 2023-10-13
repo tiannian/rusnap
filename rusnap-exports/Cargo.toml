@@ -2,6 +2,7 @@
 name = "rusnap-exports"
 version = "0.1.0"
 edition = "2021"
+description = "RuSnap exports api to Metamask Snap"
 repository.workspace = true
 readme.workspace = true
 license.workspace = true

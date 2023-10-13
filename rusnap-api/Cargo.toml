@@ -2,6 +2,7 @@
 name = "rusnap-api"
 version = "0.1.0"
 edition = "2021"
+description = "JSONRPC API for Metamask Snap"
 repository.workspace = true
 readme.workspace = true
 license.workspace = true

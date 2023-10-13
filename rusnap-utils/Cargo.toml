@@ -2,6 +2,7 @@
 name = "rusnap-utils"
 version = "0.1.0"
 edition = "2021"
+description = "Utils for RuSnap"
 repository.workspace = true
 readme.workspace = true
 license.workspace = true
