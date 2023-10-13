@@ -3,7 +3,7 @@ use std::{any::Any, collections::HashMap};
 use async_trait::async_trait;
 use wasm_bindgen::JsValue;
 
-use crate::{set_handler, Error, Handler, Result};
+use crate::{set_handler, Error, Handler, JsResult};
 
 /// An endpoint can response an method
 #[async_trait(?Send)]
@@ -14,7 +14,7 @@ pub trait Endpoint: Send + Sync {
         params: JsValue,
         data: &dyn Any,
         origin: Option<&str>,
-    ) -> Result<JsValue>;
+    ) -> JsResult<JsValue>;
 }
 
 /// Dispatch RPC call based on method.
@@ -25,14 +25,20 @@ pub struct Route {
 
 #[async_trait(?Send)]
 impl Handler for Route {
-    async fn handle_rpc(&self, origin: &str, method: &str, params: JsValue) -> Result<JsValue> {
-        let h = self.calls.get(method).ok_or(Error::NoTargetMethodFound)?;
+    async fn handle_rpc(&self, origin: &str, method: &str, params: JsValue) -> JsResult<JsValue> {
+        let h = self
+            .calls
+            .get(method)
+            .ok_or(Error::NoTargetMethodFound.into_error())?;
 
         h.handle(method, params, &self.data, Some(origin)).await
     }
 
-    async fn handle_cronjob(&self, method: &str, params: JsValue) -> Result<JsValue> {
-        let h = self.calls.get(method).ok_or(Error::NoTargetMethodFound)?;
+    async fn handle_cronjob(&self, method: &str, params: JsValue) -> JsResult<JsValue> {
+        let h = self
+            .calls
+            .get(method)
+            .ok_or(Error::NoTargetMethodFound.into_error())?;
         h.handle(method, params, &self.data, None).await
     }
 }

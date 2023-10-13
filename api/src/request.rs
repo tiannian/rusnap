@@ -1,18 +1,13 @@
+use rusnap_utils::{JsResult, RPCRequest};
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
 
-use crate::{Error, JsResult, Result};
+use crate::{Error, Result};
 
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = snap, js_name = request, catch)]
     async fn _request(args: JsValue) -> JsResult<JsValue>;
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct RPCRequest<'a, P> {
-    pub method: &'a str,
-    pub params: P,
 }
 
 /// Call metamask using `snap.request`.

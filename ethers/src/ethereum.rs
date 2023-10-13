@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-use rusnap::{JsResult, RPCRequest};
+use rusnap_utils::{JsResult, RPCRequest};
 use serde::{de::DeserializeOwned, Serialize};
 use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
 

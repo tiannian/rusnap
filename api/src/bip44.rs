@@ -1,6 +1,7 @@
+use rusnap_utils::bytes;
 use serde::{Deserialize, Serialize};
 
-use crate::{snap::utils, Result};
+use crate::Result;
 
 use super::request;
 
@@ -8,7 +9,7 @@ use super::request;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Bip44Entropy {
-    #[serde(with = "utils")]
+    #[serde(with = "bytes")]
     pub chain_code: Vec<u8>,
 
     #[serde(rename = "coin_type")]
@@ -24,10 +25,10 @@ pub struct Bip44Entropy {
 
     pub path: String,
 
-    #[serde(with = "utils")]
+    #[serde(with = "bytes")]
     pub private_key: Vec<u8>,
 
-    #[serde(with = "utils")]
+    #[serde(with = "bytes")]
     pub public_key: Vec<u8>,
 }
 

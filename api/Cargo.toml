@@ -1,0 +1,22 @@
+[package]
+name = "rusnap-api"
+version = "0.1.0"
+edition = "2021"
+repository.workspace = true
+readme.workspace = true
+license.workspace = true
+authors.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rusnap-utils.workspace = true
+
+js-sys.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+wasm-bindgen.workspace = true
+serde-wasm-bindgen.workspace = true
+log.workspace = true
+wasm-bindgen-futures.workspace = true
+const-hex.workspace = true

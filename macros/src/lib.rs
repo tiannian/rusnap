@@ -53,8 +53,6 @@ pub fn handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
                     let r = #mod_name( #(#arg_name),* ).await;
 
                     Ok(r.into_response().await?)
-
-                    // Ok(rusnap::serde_wasm_bindgen::to_value(&r)?)
                 }
             }
         }

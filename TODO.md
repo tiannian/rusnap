@@ -7,10 +7,11 @@
 - [x] main in macros
 - [x] catch support
 - [x] result expose support
-- [ ] ethereum provider
+- [x] ethereum provider
 - [ ] network api
 - [x] add document
 - [ ] Add timer and cycle call
+- [ ] Error handle
 
 ## Version 0.2
 

@@ -1,12 +1,11 @@
 //! Helper function and type
 
-use std::any::Any;
+use std::{any::Any, error::Error};
 
 use async_trait::async_trait;
+use rusnap_utils::JsResult;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::JsValue;
-
-use crate::Error;
 
 /// Helper trait from request
 #[async_trait(?Send)]
@@ -56,12 +55,12 @@ where
 
 #[async_trait(?Send)]
 pub trait IntoResponse: Sized {
-    async fn into_response(self) -> Result<JsValue, Error>;
+    async fn into_response(self) -> JsResult<JsValue>;
 }
 
 #[async_trait(?Send)]
 impl IntoResponse for () {
-    async fn into_response(self) -> Result<JsValue, Error> {
+    async fn into_response(self) -> JsResult<JsValue> {
         Ok(JsValue::null())
     }
 }
@@ -70,7 +69,7 @@ macro_rules! define_concrate_type_response {
     ($t:ty) => {
         #[async_trait(?Send)]
         impl IntoResponse for $t {
-            async fn into_response(self) -> Result<JsValue, Error> {
+            async fn into_response(self) -> JsResult<JsValue> {
                 Ok(JsValue::from(self))
             }
         }
@@ -95,7 +94,7 @@ define_concrate_type_response!(usize);
 
 #[async_trait(?Send)]
 impl<'a> IntoResponse for &'a String {
-    async fn into_response(self) -> Result<JsValue, Error> {
+    async fn into_response(self) -> JsResult<JsValue> {
         Ok(JsValue::from(self))
     }
 }
@@ -105,7 +104,7 @@ impl<T> IntoResponse for Option<T>
 where
     JsValue: From<T>,
 {
-    async fn into_response(self) -> Result<JsValue, Error> {
+    async fn into_response(self) -> JsResult<JsValue> {
         Ok(match self {
             Some(v) => JsValue::from(v),
             None => JsValue::null(),
@@ -117,11 +116,15 @@ where
 impl<T, E> IntoResponse for Result<T, E>
 where
     T: Serialize,
-    Error: From<E>,
+    E: Error,
 {
-    async fn into_response(self) -> Result<JsValue, Error> {
-        let r = serde_wasm_bindgen::to_value(&self?)?;
-
-        Ok(r)
+    async fn into_response(self) -> JsResult<JsValue> {
+        match self {
+            Ok(v) => {
+                Ok(serde_wasm_bindgen::to_value(&v)
+                    .map_err(|e| js_sys::Error::new(&e.to_string()))?)
+            }
+            Err(e) => Err(js_sys::Error::new(&e.to_string())),
+        }
     }
 }
