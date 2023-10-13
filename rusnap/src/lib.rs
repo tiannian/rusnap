@@ -14,7 +14,7 @@ pub use rusnap_exports as exports;
 pub use rusnap_utils as utils;
 
 #[doc(inline)]
-pub use rusnap_macros::*;
+pub use rusnap_macros::main;
 
 #[doc(hidden)]
 pub use async_trait::async_trait;

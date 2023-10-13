@@ -11,6 +11,7 @@ authors.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+rusnap-macros.workspace = true
 rusnap-utils.workspace = true
 
 js-sys.workspace = true
