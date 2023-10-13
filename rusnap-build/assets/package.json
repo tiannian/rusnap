@@ -8,8 +8,6 @@
   },
   "author": "__RUSNAP_AUTHOR",
   "dependencies": {
-    "@metamask/snaps-ui": "^0.37.5-flask.1",
-    "buffer": "^6.0.3",
     "encoded-uint8array-loader": "^1.0.3"
   },
   "devDependencies": {
