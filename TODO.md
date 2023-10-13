@@ -9,6 +9,8 @@
 - [x] result expose support
 - [ ] ethereum provider
 - [ ] network api
+- [x] add document
+- [ ] Add timer and cycle call
 
 ## Version 0.2
 

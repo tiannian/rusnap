@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
 
-members = ["build", "std", "cargo", "macros"]
+members = ["build", "std", "cargo", "macros", "ethers"]
 
 [workspace.package]
 repository = "https://github.com/tiannian/rusnap"
@@ -10,4 +10,5 @@ license = "MIT"
 authors = ["tiannian <dtiannian@gmail.com>"]
 
 [workspace.dependencies]
+rusnap = { version = "0.1", path = "std" }
 rusnap-macros = { version = "0.1", path = "macros" }

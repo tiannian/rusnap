@@ -26,4 +26,3 @@ const-hex = { version = "1.9.1", features = ["hex"] }
 [features]
 default = []
 snaps-api = []
-ethereum-provider = []

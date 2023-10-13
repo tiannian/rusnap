@@ -2,6 +2,18 @@
 
 Build Metamask Snap use Rust.
 
+## Features
+
+- Snap basic function.
+  - Manage keys
+  - Dialog and Notification
+  - Random
+  - Store Data
+  - Network Access (WIP)
+  - Ethereum Provider (WIP)
+- RPC Handle
+- Keyring API (TODO)
+
 ## Example
 
 https://github.com/tiannian/rusnap-example
@@ -24,7 +36,7 @@ Please install these dependencies.
 ### Create Snap
 
 ```bash
-cargo rusnap new rusnap-pkg
+cargo rusnap new <pkg-name>
 ```
 
 ### Build Snap
@@ -34,7 +46,7 @@ cargo rusnap new rusnap-pkg
 cargo rusnap build
 
 # Build release mode
-cargo rusnap build --release 
+cargo rusnap build --release
 ```
 
 ### Start Snap
@@ -42,6 +54,10 @@ cargo rusnap build --release
 ```bash
 cargo rusnap start
 ```
+
+## Snap
+
+### Install Snap in Metamask
 
 Then you can load snap in metamask.
 
@@ -55,3 +71,43 @@ window.ethereum.request({
 ```
 
 Or use Metamask Snap Debug Tool.
+
+### Call Snap
+
+Execute these js statement in broswer devtool:
+
+```
+window.ethereum.request({
+  method: "wallet_invokeSnap",
+  params: {
+    snapId: "local:http://localhost:8080",
+    request: {
+      method: "hello",
+    },
+  },
+});
+```
+
+## Publish Snap
+
+> TODO
+
+## Reference
+
+### Basic Function
+
+Basic function of Snap: ![docs.rs](https://img.shields.io/docsrs/rusnap)
+
+### Random
+
+Use `OsRng` in `rand_core` or other random crate based on `getrandom`.
+
+Please add `getrandom` with `js` feature.
+
+```toml
+getrandom = { version = "0.2.10", features = ["js"] }
+```
+
+### Web3 SDK
+
+Use `rusnap-ethers` and `ethers`.

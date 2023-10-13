@@ -1,4 +1,6 @@
 pub mod snap;
+#[doc(inline)]
+pub use snap::RPCRequest;
 
 mod error;
 pub use error::*;

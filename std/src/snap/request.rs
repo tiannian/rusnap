@@ -10,9 +10,9 @@ extern "C" {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Request<P> {
-    method: &'static str,
-    params: P,
+pub struct RPCRequest<'a, P> {
+    pub method: &'a str,
+    pub params: P,
 }
 
 /// Call metamask using `snap.request`.
@@ -25,7 +25,7 @@ where
     P: Serialize,
     R: for<'de> Deserialize<'de>,
 {
-    let req = Request { method, params };
+    let req = RPCRequest { method, params };
     let req = serde_wasm_bindgen::to_value(&req)?;
 
     log::debug!("Rpc Call Request is: {:?}", req);

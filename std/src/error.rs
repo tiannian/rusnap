@@ -19,6 +19,9 @@ pub enum Error {
     #[error("No target method found")]
     NoTargetMethodFound,
 
+    #[error("Wrong type of connected")]
+    WrongConnectedType,
+
     #[error("Error from js")]
     JsError(js_sys::Error),
 }
