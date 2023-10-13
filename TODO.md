@@ -16,6 +16,7 @@
 - [ ] Remove npm, use Rust build frontend asset directly.
   - [ ] call wasm-pack directly
   - [ ] call turbopack directly
+  - [ ] compute checksum in rust
 
 ## Version 0.2
 
