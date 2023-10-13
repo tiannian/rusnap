@@ -29,7 +29,9 @@ pub fn handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
         mod #mod_name {
             use super::*;
-            use rusnap::{wasm_bindgen::JsValue, types::{FromRequest, IntoResponse}, Result};
+            use rusnap::{
+                wasm_bindgen::JsValue, exports::{types::{FromRequest, IntoResponse}, Endpoint}, utils::JsResult,
+            };
 
             #input
 
@@ -37,14 +39,14 @@ pub fn handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
             pub struct #struct_name;
 
             #[rusnap::async_trait(?Send)]
-            impl rusnap::Endpoint for #struct_name {
+            impl Endpoint for #struct_name {
                 async fn handle(
                     &self,
                     method: &str,
                     params: JsValue,
                     data: &dyn std::any::Any,
                     _origin: Option<&str>,
-                ) -> Result<JsValue> {
+                ) -> JsResult<JsValue> {
 
                     #(
                         let #arg_name = FromRequest::from_request(method, params.clone(), data).await;
@@ -73,7 +75,7 @@ pub fn main(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
     let expanded = quote! {
         mod __rusnp_entry {
-            use rusnap::{wasm_bindgen::{self, JsValue}, wasm_bindgen_futures, exports, JsResult};
+            use rusnap::{wasm_bindgen::{self, JsValue}, wasm_bindgen_futures, exports, utils::JsResult};
 
             use super::*;
 

@@ -10,3 +10,13 @@ authors.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+rusnap-api.workspace = true
+rusnap-build.workspace = true
+rusnap-ethers.workspace = true
+rusnap-exports.workspace = true
+rusnap-utils.workspace = true
+rusnap-macros.workspace = true
+
+wasm-bindgen.workspace = true
+wasm-bindgen-futures.workspace = true
+async-trait.workspace = true

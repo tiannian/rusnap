@@ -19,6 +19,10 @@ license = "MIT"
 authors = ["tiannian <dtiannian@gmail.com>"]
 
 [workspace.dependencies]
+rusnap-api = { version = "0.1", path = "rusnap-api" }
+rusnap-build = { version = "0.1", path = "rusnap-build" }
+rusnap-ethers = { version = "0.1", path = "rusnap-ethers" }
+rusnap-exports = { version = "0.1", path = "rusnap-exports" }
 rusnap-utils = { version = "0.1", path = "rusnap-utils" }
 rusnap-macros = { version = "0.1", path = "rusnap-macros" }
 

@@ -1,10 +1,11 @@
+//! Exports RPC to Metamask Snap
+
 mod error;
 pub use error::*;
 
-/// Snap exports interface
-pub mod exports;
+mod exports;
 #[doc(inline)]
-pub use exports::{set_handler, Handler};
+pub use exports::*;
 
 mod route;
 pub use route::*;

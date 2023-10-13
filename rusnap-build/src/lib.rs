@@ -1,3 +1,5 @@
+//! Build script for RuSnap
+
 mod config;
 pub use config::*;
 

@@ -1,3 +1,5 @@
+//! Ethers support in RuSnap
+
 mod ethereum;
 pub use ethereum::*;
 

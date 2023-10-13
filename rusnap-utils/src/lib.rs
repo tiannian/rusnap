@@ -1,3 +1,5 @@
+//! Utils for RuSnap
+
 /// Result exposed to JS
 pub type JsResult<T> = std::result::Result<T, js_sys::Error>;
 

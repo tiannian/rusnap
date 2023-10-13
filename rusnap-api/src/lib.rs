@@ -1,3 +1,5 @@
+//! JSONRPC API to Metamask Snap
+
 mod error;
 pub use error::*;
 
