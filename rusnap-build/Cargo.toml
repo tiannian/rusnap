@@ -1,6 +1,6 @@
 [package]
 name = "rusnap-build"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2021"
 description = "Build script for RuSnap"
 license.workspace = true
