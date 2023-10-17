@@ -10,7 +10,7 @@ use crate::{Error, Result};
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = ethereum, js_name = isConnected)]
-    fn _is_connected() -> JsValue;
+    fn _is_connected() -> bool;
 
     #[wasm_bindgen(js_namespace = ethereum, js_name = request, catch)]
     async fn _request(req: JsValue) -> JsResult<JsValue>;
@@ -19,14 +19,16 @@ extern "C" {
     fn _on(event: &str, func: JsValue);
 }
 
-pub fn is_metamask_connected() -> Result<bool> {
-    _is_connected().as_bool().ok_or(Error::WrongConnectedType)
+/// Check metamask is connected
+pub fn is_metamask_connected() -> bool {
+    _is_connected()
 }
 
+/// RPC to request metamask
 #[derive(Debug, Default)]
-pub struct MetamaskProvider {}
+pub struct MetamaskRpc {}
 
-impl MetamaskProvider {
+impl MetamaskRpc {
     async fn _req<T, R>(&self, method: &str, params: T) -> Result<R>
     where
         T: Debug + Serialize + Send + Sync,
@@ -57,7 +59,7 @@ impl MetamaskProvider {
 
 #[cfg(target_arch = "wasm32")]
 #[async_trait::async_trait(?Send)]
-impl ethers_providers::JsonRpcClient for MetamaskProvider {
+impl ethers_providers::JsonRpcClient for MetamaskRpc {
     type Error = ethers_providers::ProviderError;
 
     async fn request<T, R>(&self, method: &str, params: T) -> std::result::Result<R, Self::Error>

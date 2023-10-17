@@ -1,11 +1,9 @@
 use ethers_providers::ProviderError;
 use thiserror::Error;
 
+/// Error
 #[derive(Debug, Error)]
 pub enum Error {
-    #[error("Failed to get connected status")]
-    WrongConnectedType,
-
     #[error(transparent)]
     SerdeError(#[from] serde_wasm_bindgen::Error),
 
@@ -19,4 +17,5 @@ impl Error {
     }
 }
 
+/// Result
 pub type Result<T> = std::result::Result<T, Error>;
