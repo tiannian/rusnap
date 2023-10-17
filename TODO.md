@@ -10,8 +10,7 @@
 - [x] ethereum provider
 - [x] Test ethereum
 - [ ] network api
-- [x] add document
-- [ ] Add timer and cycle call
+- [x] add rustdoc
 - [x] Error handle
 - [ ] Remove npm, use Rust build frontend asset directly.
   - [ ] call wasm-pack directly
