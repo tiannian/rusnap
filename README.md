@@ -10,7 +10,7 @@ Build Metamask Snap use Rust.
   - Random
   - Store Data
   - Network Access (WIP)
-  - Ethereum Provider (WIP)
+  - Ethereum Provider
 - RPC Handle
 - Keyring API (TODO)
 
@@ -76,7 +76,7 @@ Or use Metamask Snap Debug Tool.
 
 Execute these js statement in broswer devtool:
 
-```
+```js
 window.ethereum.request({
   method: "wallet_invokeSnap",
   params: {
@@ -112,4 +112,4 @@ getrandom = { version = "0.2.10", features = ["js"] }
 
 Use `rusnap-ethers` and `ethers`.
 
-> Note: `rusnap-ethers` don't re-export into `rusnap` crate, please add this crate independently.
+> Note: `rusnap-ethers` don't re-export in `rusnap` crate, please add this crate independently.
