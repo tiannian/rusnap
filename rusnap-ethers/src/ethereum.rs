@@ -1,6 +1,7 @@
 use std::fmt::Debug;
 
-use rusnap_utils::{JsResult, RPCRequest};
+use js_sys::{Object, Reflect};
+use rusnap_utils::JsResult;
 use serde::{de::DeserializeOwned, Serialize};
 use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
 
@@ -22,22 +23,33 @@ pub fn is_metamask_connected() -> Result<bool> {
     _is_connected().as_bool().ok_or(Error::WrongConnectedType)
 }
 
-#[derive(Debug)]
-pub struct EthereumProvider {}
+#[derive(Debug, Default)]
+pub struct MetamaskProvider {}
 
-impl EthereumProvider {
+impl MetamaskProvider {
     async fn _req<T, R>(&self, method: &str, params: T) -> Result<R>
     where
         T: Debug + Serialize + Send + Sync,
         R: DeserializeOwned + Send,
     {
-        log::debug!("Send JSONRPC Request: {method} {:?}", params);
+        let req = Object::new();
+        Reflect::set(&req, &"method".into(), &method.into())
+            .map_err(|e| Error::JsError(e.into()))?;
 
-        let req = RPCRequest { method, params };
+        let params = serde_wasm_bindgen::to_value(&params)?;
+        if !params.is_undefined() {
+            Reflect::set(&req, &"params".into(), &params).map_err(|e| Error::JsError(e.into()))?;
+        }
 
-        let req = serde_wasm_bindgen::to_value(&req)?;
+        log::debug!("Send JSONRPC Request: {req:?}");
 
-        let r = _request(req).await.map_err(Error::JsError)?;
+        let r = _request(req.into()).await;
+
+        if let Err(e) = &r {
+            log::error!("Got error: {e:?}");
+        }
+
+        let r = r.map_err(Error::JsError)?;
 
         Ok(serde_wasm_bindgen::from_value(r)?)
     }
@@ -45,7 +57,7 @@ impl EthereumProvider {
 
 #[cfg(target_arch = "wasm32")]
 #[async_trait::async_trait(?Send)]
-impl ethers_providers::JsonRpcClient for EthereumProvider {
+impl ethers_providers::JsonRpcClient for MetamaskProvider {
     type Error = ethers_providers::ProviderError;
 
     async fn request<T, R>(&self, method: &str, params: T) -> std::result::Result<R, Self::Error>
