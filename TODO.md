@@ -13,9 +13,9 @@
 - [x] add rustdoc
 - [x] Error handle
 - [ ] Remove npm, use Rust build frontend asset directly.
-  - [ ] call wasm-pack directly
+  - [x] call wasm-pack directly
   - [ ] call turbopack directly
-  - [ ] compute checksum in rust
+  - [x] compute checksum in rust
 
 ## Version 0.2
 

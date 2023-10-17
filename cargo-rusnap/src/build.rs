@@ -1,7 +1,14 @@
-use std::{fs, process::Command};
+use std::{fs, process};
 
 use anyhow::{anyhow, Result};
 use clap::Args;
+use wasm_pack::{
+    command::{
+        build::{BuildOptions, Target},
+        run_wasm_pack, Command,
+    },
+    install::InstallMode,
+};
 
 use crate::{status::DepInfo, utils};
 
@@ -27,40 +34,29 @@ impl BuildArg {
             fs::create_dir_all(&target_path)?;
         }
 
-        let mut command = Command::new(info.wasm_pack());
+        let build_command = BuildOptions {
+            path: None,
+            scope: None,
+            mode: InstallMode::Normal,
+            disable_dts: true,
+            weak_refs: false,
+            reference_types: false,
+            target: Target::Web,
+            debug: false,
+            dev: this.dev,
+            release: this.release,
+            profiling: this.profiling,
+            out_dir: target_path
+                .join("pkg")
+                .to_str()
+                .expect("Failed into str")
+                .into(),
+            out_name: Some("__rusnap".into()),
+            no_pack: true,
+            extra_options: vec![],
+        };
 
-        command
-            .arg("build")
-            .arg("--out-dir")
-            .arg(target_path.join("pkg"))
-            .arg("--target")
-            .arg("web")
-            .arg("--no-typescript")
-            .arg("--out-name")
-            .arg("__rusnap")
-            .arg("--no-pack");
-
-        if !this.dev && !this.release && !this.profiling {
-            this.dev = true;
-        }
-
-        if this.dev {
-            command.arg("--dev");
-        }
-
-        if this.release {
-            command.arg("--release");
-        }
-
-        if this.profiling {
-            command.arg("--profiling");
-        }
-
-        let res = command.spawn()?.wait()?;
-
-        if !res.success() {
-            return Err(anyhow!("Build webassembly failed"));
-        }
+        run_wasm_pack(Command::Build(build_command))?;
 
         // Install info
         let nm_path = target_path.join("node_modules");

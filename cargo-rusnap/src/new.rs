@@ -1,7 +1,9 @@
-use std::process::Command;
-
 use anyhow::Result;
 use clap::Args;
+use wasm_pack::{
+    command::{run_wasm_pack, Command},
+    install::InstallMode,
+};
 
 #[derive(Args, Debug)]
 pub struct NewArg {
@@ -18,14 +20,15 @@ impl NewArg {
             self.name.clone()
         };
 
-        let mut output = Command::new("wasm-pack")
-            .arg("new")
-            .arg("--template")
-            .arg("https://github.com/tiannian/rusnap-template.git")
-            .arg(&snap_name)
-            .spawn()?;
+        let template = "https://github.com/tiannian/rusnap-template.git".into();
 
-        output.wait()?;
+        let command = Command::Generate {
+            name: snap_name,
+            template,
+            mode: InstallMode::Normal,
+        };
+
+        run_wasm_pack(command)?;
 
         Ok(())
     }
