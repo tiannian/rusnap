@@ -12,6 +12,22 @@ pub struct MetamaskProvider {
     provider: Provider<crate::MetamaskRpc>,
 }
 
+impl MetamaskProvider {
+    #[cfg(target_arch = "wasm32")]
+    pub fn new_metamask() -> Self {
+        Self {
+            provider: Provider::new(crate::MetamaskRpc::default()),
+        }
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn new_http(http: ethers_providers::Http) -> Self {
+        Self {
+            provider: Provider::new(http),
+        }
+    }
+}
+
 #[cfg(not(target_arch = "wasm32"))]
 impl Middleware for MetamaskProvider {
     type Error = ProviderError;
