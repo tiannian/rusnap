@@ -12,6 +12,12 @@ pub struct MetamaskProvider {
     provider: Provider<crate::MetamaskRpc>,
 }
 
+impl Default for MetamaskProvider {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl MetamaskProvider {
     #[cfg(target_arch = "wasm32")]
     pub fn new() -> Self {
