@@ -14,16 +14,20 @@ pub struct MetamaskProvider {
 
 impl MetamaskProvider {
     #[cfg(target_arch = "wasm32")]
-    pub fn new_metamask() -> Self {
+    pub fn new() -> Self {
         Self {
             provider: Provider::new(crate::MetamaskRpc::default()),
         }
     }
 
     #[cfg(not(target_arch = "wasm32"))]
-    pub fn new_http(http: ethers_providers::Http) -> Self {
+    pub fn new() -> Self {
+        use std::str::FromStr;
+
         Self {
-            provider: Provider::new(http),
+            provider: Provider::new(
+                ethers_providers::Http::from_str("http://127.0.0.1:8545").unwrap(),
+            ),
         }
     }
 }
