@@ -2,23 +2,21 @@
 
 Build Metamask Snap use Rust.
 
-## Features
+## Crates
 
-- Snap basic function.
-  - Manage keys
-  - Dialog and Notification
-  - Random
-  - Store Data
-  - Network Access (WIP)
-  - Ethereum Provider
-- RPC Handle
-- Keyring API (TODO)
+| Name   | crate.io                                                                                | docs.rs |
+| ------ | --------------------------------------------------------------------------------------- | ------- |
+| rusnap | [![Crates.io](https://img.shields.io/crates/v/rusnap)](https://crates.io/crates/rusnap) |         |
 
-## Example
+## Documents
 
-https://github.com/tiannian/rusnap-example
+Visit API reference on [docs.rs](https://docs.rs/rusnap/latest/rusnap/).
 
-## Install and Usage
+And the documents for detail usage in [book](book)
+
+### Quickstart
+
+#### Install and Usage
 
 Install `cargo-rusnap`.
 
@@ -26,77 +24,49 @@ Install `cargo-rusnap`.
 cargo install rusnap
 ```
 
-### Dependencies
+#### Create Snap
 
-Please install these dependencies.
-
-- wasm-pack
-- npm (yarn or pnpm)
-
-### Create Snap
+Creating a Snap is very easy, only need run:
 
 ```bash
 cargo rusnap new <pkg-name>
 ```
 
-### Build Snap
+#### Start Snap
+
+Enter you Snap folder:
 
 ```bash
-# Build dev mode in default
-cargo rusnap build
-
-# Build release mode
-cargo rusnap build --release
+cd <pkg-name>
 ```
 
-### Start Snap
+Then start a dev server.
 
 ```bash
 cargo rusnap start
 ```
 
-## Snap
+This command will recompile your snap when you change file.
 
-### Install Snap in Metamask
+### Example
 
-Then you can load snap in metamask.
+https://github.com/tiannian/rusnap-example
 
-Execute these js statement in broswer devtool:
+## Features
 
-```js
-window.ethereum.request({
-  method: "wallet_requestSnaps",
-  params: { "local:http://localhost:8080": {} },
-});
-```
+- Manage keys (bip32, bip44, entropy)
+- Dialog and Notification
+- [Random](#random)
+- Store Data
+- Network access (See issue)
+- Ethereum provider (work with ethers)
+- Handle RPC call based on method
+- Cronjon support
+- Transaction insight support
+- Without npm or node requirement
+- Using Rust project structure
 
-Or use Metamask Snap Debug Tool.
-
-### Call Snap
-
-Execute these js statement in broswer devtool:
-
-```js
-window.ethereum.request({
-  method: "wallet_invokeSnap",
-  params: {
-    snapId: "local:http://localhost:8080",
-    request: {
-      method: "hello",
-    },
-  },
-});
-```
-
-## Publish Snap
-
-> TODO
-
-## Reference
-
-### Basic Function
-
-Basic function of Snap: ![docs.rs](https://img.shields.io/docsrs/rusnap)
+## Useful crates
 
 ### Random
 
