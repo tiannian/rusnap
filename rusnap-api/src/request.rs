@@ -1,5 +1,6 @@
 use rusnap_utils::{JsResult, RPCRequest};
 use serde::{Deserialize, Serialize};
+use serde_wasm_bindgen::Serializer;
 use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
 
 use crate::{Error, Result};
@@ -21,7 +22,10 @@ where
     R: for<'de> Deserialize<'de>,
 {
     let req = RPCRequest { method, params };
-    let req = serde_wasm_bindgen::to_value(&req)?;
+
+    let sers = Serializer::default().serialize_maps_as_objects(true);
+
+    let req = req.serialize(&sers)?;
 
     log::debug!("Rpc Call Request is: {:?}", req);
 
