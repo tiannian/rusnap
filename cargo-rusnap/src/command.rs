@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use clap::Subcommand;
 
-use crate::{build::BuildArg, new::NewArg, start, status::DepInfo};
+use crate::{build::BuildArg, new::NewArg, serve, start, status::DepInfo};
 
 #[derive(Debug, Subcommand)]
 pub enum Rusnap {
@@ -10,6 +10,7 @@ pub enum Rusnap {
     Build(BuildArg),
     Start,
     Publish,
+    Serve(serve::ServeArg),
 }
 
 fn status(info: &DepInfo) -> Result<()> {
@@ -45,6 +46,9 @@ impl Rusnap {
             }
             Self::Start => {
                 start::execute(&info)?;
+            }
+            Self::Serve(arg) => {
+                arg.execute()?;
             }
             _ => {}
         }

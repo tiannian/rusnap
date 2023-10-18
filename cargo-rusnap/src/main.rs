@@ -3,6 +3,7 @@ use clap::Parser;
 mod build;
 mod command;
 mod new;
+mod serve;
 mod start;
 mod status;
 mod utils;

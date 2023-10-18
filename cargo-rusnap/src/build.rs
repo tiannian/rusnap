@@ -1,4 +1,4 @@
-use std::{fs, process};
+use std::fs;
 
 use anyhow::{anyhow, Result};
 use clap::Args;
@@ -26,8 +26,6 @@ pub struct BuildArg {
 
 impl BuildArg {
     pub fn execute(self, info: &DepInfo) -> Result<()> {
-        let mut this = self;
-
         let target_path = utils::get_rusnap_path()?;
 
         if !target_path.exists() {
@@ -43,9 +41,9 @@ impl BuildArg {
             reference_types: false,
             target: Target::Web,
             debug: false,
-            dev: this.dev,
-            release: this.release,
-            profiling: this.profiling,
+            dev: self.dev,
+            release: self.release,
+            profiling: self.profiling,
             out_dir: target_path
                 .join("pkg")
                 .to_str()

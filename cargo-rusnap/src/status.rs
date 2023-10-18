@@ -74,10 +74,6 @@ impl DepInfo {
         !matches!(self.npm, NpmInfo::None) && self.wasm_pack.is_some()
     }
 
-    pub fn wasm_pack(&self) -> &str {
-        "wasm-pack"
-    }
-
     pub fn npm_install_deps(&self) -> Option<Command> {
         match self.npm {
             NpmInfo::None => None,
