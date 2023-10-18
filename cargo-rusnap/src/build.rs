@@ -1,6 +1,6 @@
 use std::fs;
 
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use clap::Args;
 use wasm_pack::{
     command::{
@@ -10,7 +10,7 @@ use wasm_pack::{
     install::InstallMode,
 };
 
-use crate::{status::DepInfo, utils};
+use crate::utils;
 
 #[derive(Args, Debug)]
 pub struct BuildArg {
@@ -25,7 +25,7 @@ pub struct BuildArg {
 }
 
 impl BuildArg {
-    pub fn execute(self, info: &DepInfo) -> Result<()> {
+    pub fn build_wasm(&self) -> Result<()> {
         let target_path = utils::get_rusnap_path()?;
 
         if !target_path.exists() {
@@ -56,24 +56,18 @@ impl BuildArg {
 
         run_wasm_pack(Command::Build(build_command))?;
 
-        // Install info
-        let nm_path = target_path.join("node_modules");
-        if !nm_path.exists() {
-            let mut cmd = info.npm_install_deps().ok_or(anyhow!("No npm found"))?;
-            let res = cmd.current_dir(&target_path).spawn()?.wait()?;
-            if !res.success() {
-                return Err(anyhow!("Install nodejs dependenices failed"));
-            }
-        }
+        Ok(())
+    }
 
-        // Build mm-snap
-        let mut cmd = info.npm_run().ok_or(anyhow!("No npm found"))?;
-        let res = cmd.arg("build").current_dir(&target_path).spawn()?.wait()?;
+    pub fn build_js(&self) -> Result<()> {
+        Ok(())
+    }
 
-        if res.success() {
-            Ok(())
-        } else {
-            Err(anyhow!("Failed to build snap"))
-        }
+    pub fn execute(self) -> Result<()> {
+        self.build_wasm()?;
+
+        self.build_js()?;
+
+        Ok(())
     }
 }

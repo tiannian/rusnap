@@ -42,7 +42,7 @@ impl Rusnap {
 
             Self::Build(arg) => {
                 status(&info)?;
-                arg.execute(&info)?;
+                arg.execute()?;
             }
             Self::Start => {
                 start::execute(&info)?;
@@ -50,7 +50,7 @@ impl Rusnap {
             Self::Serve(arg) => {
                 arg.execute()?;
             }
-            _ => {}
+            Self::Publish => {}
         }
 
         Ok(())

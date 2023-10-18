@@ -1,6 +1,7 @@
 use anyhow::Result;
 use clap::Args;
 use tokio::runtime::Runtime;
+use warp::Filter;
 
 use crate::utils;
 
@@ -23,7 +24,7 @@ pub fn serve_http(port: u16) -> Result<()> {
     let rt = Runtime::new()?;
 
     rt.block_on(async move {
-        warp::serve(warp::fs::dir(rusnap_dir))
+        warp::serve(warp::fs::dir(rusnap_dir).with(warp::log("access")))
             .run(([0, 0, 0, 0], port))
             .await;
     });
