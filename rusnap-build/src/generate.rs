@@ -75,11 +75,9 @@ fn build_minifest(path: &Path, config: &SnapConfig) -> Result<()> {
 }
 
 fn build_icon(path: &Path, config: &SnapConfig) -> Result<()> {
-    let icon_path = Path::new(&config.snap.icon);
+    let target = path.join(&config.snap.icon);
 
-    let target = path.join(icon_path);
-
-    fs::copy(icon_path, target)?;
+    fs::copy(&config.snap.icon, target)?;
 
     Ok(())
 }

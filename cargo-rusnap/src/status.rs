@@ -74,33 +74,6 @@ impl DepInfo {
         !matches!(self.npm, NpmInfo::None) && self.wasm_pack.is_some()
     }
 
-    pub fn npm_install_deps(&self) -> Option<Command> {
-        match self.npm {
-            NpmInfo::None => None,
-            NpmInfo::Npm(_) => {
-                let mut cmd = Command::new("npm");
-
-                cmd.arg("install");
-
-                Some(cmd)
-            }
-            NpmInfo::Yarn(_) => {
-                let mut cmd = Command::new("yarn");
-
-                cmd.arg("install");
-
-                Some(cmd)
-            }
-            NpmInfo::Pnpm(_) => {
-                let mut cmd = Command::new("pnpm");
-
-                cmd.arg("install");
-
-                Some(cmd)
-            }
-        }
-    }
-
     pub fn npm_run(&self) -> Option<Command> {
         match self.npm {
             NpmInfo::None => None,
