@@ -3,7 +3,7 @@ use std::{
     io::Write,
 };
 
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use base64::{engine::general_purpose, Engine};
 use clap::Args;
 use digest::Digest;
@@ -93,17 +93,33 @@ impl BuildArg {
     pub fn build_manifest(&self) -> Result<()> {
         let base = utils::get_rusnap_path()?;
 
-        let minifest = fs::read_to_string(base.join("snap.manifest.json")).unwrap();
-        let mut jsonv: serde_json::Value = serde_json::from_str(&minifest).unwrap();
-        let jv = &mut jsonv["source"].as_object_mut().unwrap();
+        let manifest_path = base.join("snap.manifest.json");
+
+        let minifest = fs::read_to_string(&manifest_path)?;
+        let mut jsonv: serde_json::Value = serde_json::from_str(&minifest)?;
+        let jv = &mut jsonv["source"]
+            .as_object_mut()
+            .ok_or(anyhow!("No source"))?;
         jv.remove("shasum");
-        let manifest = serde_json::to_string(&jsonv).unwrap();
+        let manifest = serde_json::to_string(&jsonv)?;
         let hm = Sha256::digest(manifest);
 
         let code = fs::read(base.join("dist/bundle.js")).unwrap();
         let hc = Sha256::digest(code);
 
-        let icon = fs::read(base.join("icon.svg")).unwrap();
+        let icon = fs::read(base.join("icon")).unwrap();
+        let hi = Sha256::digest(icon);
+
+        let mut hasher = Sha256::new();
+        hasher.update(hc);
+        hasher.update(hi);
+        hasher.update(hm);
+        let result = hasher.finalize();
+        let r = general_purpose::STANDARD.encode(result);
+
+        jsonv["source"]["shasum"] = r.into();
+        let manifest = serde_json::to_string_pretty(&jsonv)?;
+        fs::write(manifest_path, manifest)?;
 
         Ok(())
     }
@@ -111,8 +127,10 @@ impl BuildArg {
     pub fn execute(self) -> Result<()> {
         self.build_wasm()?;
 
+        log::info!("Generate js code");
         self.build_js()?;
 
+        log::info!("Re-build manifest file");
         self.build_manifest()?;
 
         Ok(())
