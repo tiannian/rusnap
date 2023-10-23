@@ -6,7 +6,6 @@ mod command;
 mod new;
 mod serve;
 mod start;
-mod status;
 mod utils;
 
 #[derive(Parser)] // requires `derive` feature

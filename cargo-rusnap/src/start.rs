@@ -1,16 +1,17 @@
-use anyhow::{anyhow, Result};
+use anyhow::Result;
+use clap::Args;
 
-use crate::{status::DepInfo, utils};
+use crate::serve::serve_http;
 
-pub fn execute(info: &DepInfo) -> Result<()> {
-    let target_path = utils::get_rusnap_path()?;
+#[derive(Args, Debug)]
+pub struct StartArg {
+    #[clap(short, long, default_value_t = 8080)]
+    pub port: u16,
+}
 
-    let mut cmd = info.npm_run().ok_or(anyhow!("No npm found"))?;
-    let res = cmd.arg("serve").current_dir(&target_path).spawn()?.wait()?;
-
-    if res.success() {
+impl StartArg {
+    pub fn execute(self) -> Result<()> {
+        serve_http(self.port)?;
         Ok(())
-    } else {
-        Err(anyhow!("Failed to execute serve"))
     }
 }

@@ -1,56 +1,32 @@
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use clap::Subcommand;
 
-use crate::{build::BuildArg, new::NewArg, serve, start, status::DepInfo};
+use crate::{build::BuildArg, new::NewArg, serve, start::StartArg};
 
 #[derive(Debug, Subcommand)]
 pub enum Rusnap {
-    Status,
     New(NewArg),
     Build(BuildArg),
-    Start,
-    Publish,
+    Start(StartArg),
     Serve(serve::ServeArg),
-}
-
-fn status(info: &DepInfo) -> Result<()> {
-    if !info.is_right() {
-        println!("{:?}", info);
-
-        Err(anyhow!("Failed to check"))
-    } else {
-        Ok(())
-    }
 }
 
 impl Rusnap {
     pub fn execute(self) -> Result<()> {
-        let info = DepInfo::new()?;
-
         match self {
-            Self::Status => {
-                if !info.is_right() {
-                    println!("{:?}", info);
-                } else {
-                    println!("Success {:?}", info);
-                }
-            }
             Self::New(arg) => {
-                status(&info)?;
                 arg.execute()?;
             }
 
             Self::Build(arg) => {
-                status(&info)?;
                 arg.execute()?;
             }
-            Self::Start => {
-                start::execute(&info)?;
+            Self::Start(arg) => {
+                arg.execute()?;
             }
             Self::Serve(arg) => {
                 arg.execute()?;
             }
-            Self::Publish => {}
         }
 
         Ok(())
