@@ -55,6 +55,11 @@ pub struct Cronjob {
     pub request: CronjobRequest,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Cronjobs {
+    pub jobs: Vec<Cronjob>,
+}
+
 impl Cronjob {
     pub fn to_json(&self) -> Value {
         json!({
@@ -91,7 +96,7 @@ pub struct SnapPermissions {
     pub manage_accounts: Option<Empty>,
     pub manage_state: Option<Empty>,
     pub notify: Option<Empty>,
-    pub cronjob: Option<Vec<Cronjob>>,
+    pub cronjob: Option<Cronjobs>,
     pub ethereum_provider: Option<Empty>,
     pub network_access: Option<Empty>,
     pub rpc: Option<RPC>,
