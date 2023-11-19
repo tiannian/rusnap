@@ -2,18 +2,8 @@
   "name": "__RUSNAP_NAME",
   "version": "__RUSNAP_VERSION",
   "main": "dist/bundle.js",
-  "scripts": {
-    "build": "mm-snap build",
-    "serve": "mm-snap serve"
-  },
+  "scripts": {},
   "author": "__RUSNAP_AUTHOR",
-  "dependencies": {
-    "encoded-uint8array-loader": "^1.0.3"
-  },
-  "devDependencies": {
-    "@metamask/snaps-cli": "^2.0.0"
-  },
-  "engines": {
-    "node": ">=16.0.0"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

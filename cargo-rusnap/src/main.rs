@@ -1,10 +1,11 @@
 use clap::Parser;
+use log::LevelFilter;
 
 mod build;
 mod command;
 mod new;
+mod serve;
 mod start;
-mod status;
 mod utils;
 
 #[derive(Parser)] // requires `derive` feature
@@ -20,6 +21,8 @@ struct DeriveArgs {
 }
 
 fn main() {
+    env_logger::builder().filter_level(LevelFilter::Info).init();
+
     let CargoCli::Rusnap(args) = CargoCli::parse();
 
     args.rusnap.execute().unwrap();
